@@ -6,16 +6,13 @@ import java.util.regex.Pattern;
 
 public class Reception {
 
-    void salute () {
-        System.out.println("Hi! What do you want?");
-    }
-
     void mainChoice(){
-        System.out.println("Creat new user - select '1'");
-        System.out.println("Find/watch user - select '2'");
-        System.out.println("Edin user - select '3'");
-        System.out.println("Remove user - select '4'");
-        System.out.println("Look all user - select '5'");
+        System.out.println("Hi! what would you like?");
+        System.out.println(" - Creat new user - select '1'");
+        System.out.println(" - Find/watch user - select '2'");
+        System.out.println(" - Edin user - select '3'");
+        System.out.println(" - Remove user - select '4'");
+        System.out.println(" - Look all user - select '5'");
     }
 
     void creatNewUserDialog(){

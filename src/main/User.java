@@ -59,4 +59,31 @@ public class User {
     public void setPhoneNumber3(int phoneNumber3) {
         this.phoneNumber3 = phoneNumber3;
     }
+
+    public User(String firstName, String lastName, String email, Role role, int phoneNumber1) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.role = role;
+        this.phoneNumber1 = phoneNumber1;
+    }
+
+    public User(String firstName, String lastName, String email, Role role, int phoneNumber1, int phoneNumber2) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.role = role;
+        this.phoneNumber1 = phoneNumber1;
+        this.phoneNumber2 = phoneNumber2;
+    }
+
+    public User(String firstName, String lastName, String email, Role role, int phoneNumber1, int phoneNumber2, int phoneNumber3) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.role = role;
+        this.phoneNumber1 = phoneNumber1;
+        this.phoneNumber2 = phoneNumber2;
+        this.phoneNumber3 = phoneNumber3;
+    }
 }

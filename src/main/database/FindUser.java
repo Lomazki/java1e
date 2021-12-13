@@ -1,6 +1,6 @@
 package main.database;
 
-public class ShowAllUsers {
+public class FindUser {
     public static void start() {
 
     }

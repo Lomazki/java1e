@@ -17,11 +17,15 @@ package main;
      */
 
 
+import java.io.*;
+
 public class Main {
     public static void main(String[] args) {
+
         Reception reception  = new Reception();
-        reception.salute();
+        Service service = new Service();
         reception.mainChoice();
+        service.mainChoice(service.entered());
 
     }
 }
