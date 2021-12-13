@@ -1,14 +1,11 @@
 package main;
 
-public class Main {
-
     /* При запуске диалоговое окно:
        Что хотите:
        - создать пользователя
        - найти\показать пользователя
             - ввести имя и фамилию или id
        - редактировать пользователя
-            - id
             - имя
             - фамилию
             - роль
@@ -20,12 +17,11 @@ public class Main {
      */
 
 
+public class Main {
     public static void main(String[] args) {
+        Reception reception  = new Reception();
+        reception.salute();
+        reception.mainChoice();
 
     }
-
-
-
-
-
 }
