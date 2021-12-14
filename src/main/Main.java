@@ -16,9 +16,6 @@ package main;
        - посмотреть всех пользователей
      */
 
-
-import java.io.*;
-
 public class Main {
     public static void main(String[] args) {
 

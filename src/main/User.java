@@ -7,10 +7,23 @@ public class User {
     String firstName;
     String lastName;
     String email;
-    Role role;
-    int phoneNumber1;
-    int phoneNumber2;
-    int phoneNumber3;
+    String role;
+    String phoneNumber1;
+    String phoneNumber2;
+    String phoneNumber3;
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", role='" + role + '\'' +
+                ", phoneNumber1='" + phoneNumber1 + '\'' +
+                ", phoneNumber2='" + phoneNumber2 + '\'' +
+                ", phoneNumber3='" + phoneNumber3 + '\'' +
+                '}';
+    }
 
     public String getFirstName() {
         return firstName;
@@ -36,31 +49,31 @@ public class User {
         this.email = email;
     }
 
-    public int getPhoneNumber1() {
+    public String getPhoneNumber1() {
         return phoneNumber1;
     }
 
-    public void setPhoneNumber1(int phoneNumber1) {
+    public void setPhoneNumber1(String phoneNumber1) {
         this.phoneNumber1 = phoneNumber1;
     }
 
-    public int getPhoneNumber2() {
+    public String getPhoneNumber2() {
         return phoneNumber2;
     }
 
-    public void setPhoneNumber2(int phoneNumber2) {
+    public void setPhoneNumber2(String phoneNumber2) {
         this.phoneNumber2 = phoneNumber2;
     }
 
-    public int getPhoneNumber3() {
+    public String getPhoneNumber3() {
         return phoneNumber3;
     }
 
-    public void setPhoneNumber3(int phoneNumber3) {
+    public void setPhoneNumber3(String phoneNumber3) {
         this.phoneNumber3 = phoneNumber3;
     }
 
-    public User(String firstName, String lastName, String email, Role role, int phoneNumber1) {
+    public User(String firstName, String lastName, String email, String role, String phoneNumber1) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -68,7 +81,7 @@ public class User {
         this.phoneNumber1 = phoneNumber1;
     }
 
-    public User(String firstName, String lastName, String email, Role role, int phoneNumber1, int phoneNumber2) {
+    public User(String firstName, String lastName, String email, String role, String phoneNumber1, String phoneNumber2) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -77,7 +90,7 @@ public class User {
         this.phoneNumber2 = phoneNumber2;
     }
 
-    public User(String firstName, String lastName, String email, Role role, int phoneNumber1, int phoneNumber2, int phoneNumber3) {
+    public User(String firstName, String lastName, String email, String role, String phoneNumber1, String phoneNumber2, String phoneNumber3) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
