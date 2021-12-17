@@ -2,6 +2,7 @@ package try2;
 
 import java.io.*;
 import java.nio.file.Path;
+import java.util.List;
 
 public class UserService {
 
@@ -9,18 +10,32 @@ public class UserService {
         return new User(name, lastName, email, role, phone);
     }
 
-    public void saveUser (User user) throws IOException {
+    public User found(List <User> userList, String email){
+        for (User user : userList){
+            if (user.getEmail().equals(email)){
+                return user;
+            }
+        }
+        return null;
+    }
+
+    public User edit(User user){
+        return null;
+    }
+
+    public void saveUser (List <User> userList, User newUser) throws IOException {
+        userList.add(newUser);
         Path path = Path.of("resources", "userBook.out");
         try (ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(path.toFile()))) {
-            objectOutputStream.writeObject(user);
+            objectOutputStream.writeObject(userList);
         }
     }
 
-    public User readUserBook() throws IOException, ClassNotFoundException {
+    public List readUserBook() throws IOException, ClassNotFoundException {
         Path path = Path.of("resources", "userBook.out");
         try (ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(path.toFile()))) {
             Object foundUser =  objectInputStream.readObject();
-            return (User) foundUser;
+            return (List) foundUser;
         }
     }
 }

@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 public class User implements Serializable {
 
+    private static final long serialVersionUID = -4811399492990244810L;
     String firstName;
     String lastName;
     String email;
@@ -16,6 +17,10 @@ public class User implements Serializable {
         this.email = email;
         this.role = role;
         this.phoneNumber1 = phoneNumber1;
+    }
+
+    public String getEmail() {
+        return email;
     }
 
     @Override
