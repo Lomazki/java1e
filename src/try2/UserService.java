@@ -4,6 +4,11 @@ import java.io.*;
 import java.nio.file.Path;
 import java.util.List;
 
+/*
+        Создай какой-нибудь класс типа Repository и там юзай доступ к файлу, а затем внедри этот Repository в
+        сервис и дергай методы этого repository
+ */
+
 public class UserService {
 
     public User create(String name, String lastName, String email, String role, String phone){
