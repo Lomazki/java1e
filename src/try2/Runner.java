@@ -1,5 +1,17 @@
 package try2;
 
+    /*
+       При запуске диалоговое окно:
+       Что хотите:
+       - создать пользователя
+       - редактировать пользователя
+            - имя
+            - фамилию
+            - роль
+            - email
+            - телефон
+     */
+
 /*
     1) Создать юзера
     2) Записать в файл
@@ -17,9 +29,17 @@ public class Runner implements Serializable {
 
     public static void main(String[] args) throws IOException {
 
-        List<User> users = new ArrayList<>();
-        UserService userService = new UserService();
-        User newUser = userService.create("Sasha", "Ivanov", "sashaivanov@mail.com", "ADMIN", "+37529 1112233");
-        userService.saveUser(users, newUser);
+        List <User> users = new ArrayList<>();              // Лист юзеров, который будет храниться в файле
+        UserService userService = new UserService();        // Основные операции с юзером
+        Repository repository = new Repository();           // Хранилище
+        Reception reception = new Reception();
+        reception.mainChoice();
+
+//        User newUser = userService.create("Sasha", "Ivanov", "sashaivanov@mail.com", "ADMIN", "+37529 1112233");
+//        repository.saveUser(users, newUser);
+//        User newUser1 = userService.create("11Sasha", "11Ivanov", "11sashaivanov@mail.com", "11ADMIN", "+37529 9999999");
+//        repository.saveUser(users, newUser1);
+//        System.out.println(userService.found(users,"sashaivanov@mail.com"));
+//        System.out.println(userService.remove(users,"sashaivanov@mail.com"));
     }
 }

@@ -53,7 +53,7 @@ public class Reception {
     }
 
     void newPhone(){
-        System.out.println("Укажите номер телефона или несколько номеров через зяпятую");
+        System.out.println("Укажите номер телефона или несколько номеров через запятую");
         Scanner scanner = new Scanner(System.in);
         String phone = scanner.nextLine();
         StringBuilder sb = new StringBuilder(phone);
