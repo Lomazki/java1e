@@ -7,8 +7,8 @@ package try2;
        - редактировать пользователя
             - имя
             - фамилию
-            - роль
             - email
+            - роль
             - телефон
      */
 
@@ -20,16 +20,13 @@ package try2;
  */
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Runner implements Serializable {
 
     private static final long serialVersionUID = -7422177151823659507L;
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, ClassNotFoundException {
 
-        List <User> users = new ArrayList<>();              // Лист юзеров, который будет храниться в файле
         UserService userService = new UserService();        // Основные операции с юзером
         Repository repository = new Repository();           // Хранилище
         Reception reception = new Reception();

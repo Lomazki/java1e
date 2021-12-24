@@ -2,11 +2,14 @@ package try2;
 
 import java.io.*;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Repository {
 
-    public void saveUser (List<User> userList, User newUser) throws IOException {
+    List <User> userList = new ArrayList<>();              // Лист юзеров, который будет храниться в файле
+
+    public void saveUser (User newUser) throws IOException {
         userList.add(newUser);
         Path path = Path.of("resources", "userBook.out");
         try (ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(path.toFile()))) {
@@ -21,4 +24,5 @@ public class Repository {
             return (List) foundUser;
         }
     }
+
 }

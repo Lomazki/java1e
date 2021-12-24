@@ -23,6 +23,22 @@ public class User implements Serializable {
         return email;
     }
 
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public String getPhoneNumber1() {
+        return phoneNumber1;
+    }
+
     @Override
     public String toString() {
         return "User{" +
