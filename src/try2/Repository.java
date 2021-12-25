@@ -9,7 +9,8 @@ public class Repository {
 
     List <User> userList = new ArrayList<>();              // Лист юзеров, который будет храниться в файле
 
-    public void saveUser (User newUser) throws IOException {
+    public void saveUser (User newUser) throws IOException, ClassNotFoundException {
+        userList = readUserBook();
         userList.add(newUser);
         Path path = Path.of("resources", "userBook.out");
         try (ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(path.toFile()))) {
@@ -25,4 +26,10 @@ public class Repository {
         }
     }
 
+    public void saveList (List<User> list) throws IOException {
+        Path path = Path.of("resources", "userBook.out");
+        try (ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(path.toFile()))) {
+            objectOutputStream.writeObject(list);
+        }
+    }
 }

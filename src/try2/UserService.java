@@ -10,8 +10,8 @@ public class UserService {
 
     public User create() {
 
-        String name = newName("Please, enter your name");
-        String lastName = newName("Please, enter your last name");
+        String name = newName("Please, enter name");
+        String lastName = newName("Please, enter last name");
         String email = newEmail("Укажите email");
         String role = newRole("Укажите role");
         String phone = newPhone("Укажите номер телефона");
@@ -34,14 +34,16 @@ public class UserService {
         return null;
     }
 
-    public String remove(List<User> userList, String email) {
+    public List remove(List<User> userList, String email) {
         for (User user : userList) {
             if (user.getEmail().equals(email)) {
                 userList.remove(user);
-                return "User removed";
+                System.out.println("User was removed");
+                return userList;
             }
         }
-        return "User not found";
+        System.out.println("User not found");
+        return null;
     }
 
     public User edit(User user) {
@@ -49,7 +51,7 @@ public class UserService {
         System.out.println("name - select 1");
         System.out.println("last name - select 2");
         System.out.println("email - select 3");
-        System.out.println("phone - select 4");
+        System.out.println("role - select 4");
         System.out.println("phone - select 5");
 
         // Пользователь ничего не выбрал !!!!!!!!!!!!!

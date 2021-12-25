@@ -11,6 +11,7 @@ package try2;
  */
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Scanner;
 
 public class Reception {
@@ -31,7 +32,7 @@ public class Reception {
         // Пользователь ничего не выбрал !!!!!!!!!!!!!
 
         switch (scanner.nextLine()) {
-            case ("1"):             // Creat        // TODO Программа перезаписывает юзера, стриая предыдущих. Исправить!!!!!!
+            case ("1"):             // Creat
                 User newUser = userService.create();
                 repository.saveUser(newUser);
                 System.out.println(newUser);
@@ -41,23 +42,33 @@ public class Reception {
                 User searchedUser = userService.found(repository.readUserBook());
                 System.out.println(searchedUser == null ? "юзер не найден" : searchedUser);
                 break;
-            case ("3"):
+            case ("3"):             // Edit
                 User editableUser = userService.found(repository.readUserBook());
                 if (editableUser != null) {
                     User userEdited = userService.edit(editableUser);
                     repository.saveUser(userEdited);
                     System.out.println(userEdited);
                     System.out.println("Юзер был успешно отредактирован и сохранен");
+                    userService.remove(repository.readUserBook(), userEdited.getEmail());
                 } else {
                     System.out.println("юзер не найден");
                 }
                 break;
             case ("4"):             // Remove
-                userService.remove(repository.readUserBook(), userService.newEmail("Введите почту юзера, которого будем удалять"));
+                repository.saveList(userService.remove(repository.readUserBook(), userService.newEmail("Введите почту юзера, которого будем удалять")));
+
                 break;
             case ("5"):             // ShowAll
-                System.out.println(repository.readUserBook());
+                List <User> allUser = repository.readUserBook();
+                for(User s : allUser) {
+                    System.out.println(s);
+                }
                 break;
         }
+    }
+
+    public static void main(String[] args) throws IOException, ClassNotFoundException {
+        Reception reception = new Reception();
+        reception.mainChoice();
     }
 }
