@@ -1,6 +1,7 @@
 package try2;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class User implements Serializable {
 
@@ -8,10 +9,10 @@ public class User implements Serializable {
     String firstName;
     String lastName;
     String email;
-    String role;
-    String phoneNumber1;
+    List<String> role;
+    List<String> phoneNumber1;
 
-    public User(String firstName, String lastName, String email, String role, String phoneNumber1) {
+    public User(String firstName, String lastName, String email, List role, List phoneNumber1) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -31,11 +32,11 @@ public class User implements Serializable {
         return lastName;
     }
 
-    public String getRole() {
+    public List getRole() {
         return role;
     }
 
-    public String getPhoneNumber1() {
+    public List getPhoneNumber1() {
         return phoneNumber1;
     }
 

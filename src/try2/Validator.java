@@ -14,6 +14,7 @@ package try2;
 email в виде *****@*****.*, к примеру, | any@email.com |. Т.е. достаточно проверки на ‘@’ и точку
  */
 
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -34,20 +35,35 @@ public class Validator {
         return matcher.find();
     }
 
-    public Boolean validatorRole(String role) {
+    public Boolean validatorRole(List<String> role) {
 
-        // добавить проверку на совместимоть ролей
+        /*
+        Проверяем role на:
+        1) Корректность. Есть ли такая роль в enum
+        2) Есть ли уже ADMIN
+        3) Соответствие уравней
+         */
 
-        return Role.getRoleNames().contains(role.toUpperCase());
+
+
+
+//        Role.getRoleNames().contains(role.toUpperCase());
+        return null;
     }
 
-    public Boolean validatorPhone(String phone) {
-        StringBuilder sb = new StringBuilder(phone);
-        Pattern pattern = Pattern.compile("^[0-9]{5} [0-9]{7}$");
-        Matcher matcher = pattern.matcher(sb);
+    public Boolean validatorPhone(List phone) {
+
+        /*
+        Проверяем на:
+        1) Корректность ввода самого номера
+        2) Количество (до трех номеров)
+         */
+//        StringBuilder sb = new StringBuilder(phone);
+//        Pattern pattern = Pattern.compile("^[0-9]{5} [0-9]{7}$");
+//        Matcher matcher = pattern.matcher(sb);
 
         // добавить проверку на наличие/ограничение до 3х телефонов
 
-        return matcher.find();
+        return null;  //matcher.find();
     }
 }

@@ -1,7 +1,10 @@
 package try2;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 
 public class UserService {
 
@@ -13,8 +16,8 @@ public class UserService {
         String name = newName("Please, enter name");
         String lastName = newName("Please, enter last name");
         String email = newEmail("Укажите email");
-        String role = newRole("Укажите role");
-        String phone = newPhone("Укажите номер телефона");
+        List role = newRole("Укажите role");
+        List phone = newPhone("Укажите номер телефона");
 
 //        String role = ... ;   // Сделать проверку на согласование ролей
 //        String phone = ... ;  // Сделать проверку на соответствие вводимого формата телефонов (допускается не более трех телефонов)
@@ -126,32 +129,41 @@ public class UserService {
         return email;
     }
 
-    public String newRole(String message) {
+    public List<String> newRole(String message) {
+        List<String> role = new ArrayList<>() ;
         System.out.println(message);
-        String role = scanner.nextLine();
+        String enterRole = scanner.nextLine();
+        Pattern pattern = Pattern.compile(",");
+        String [] array = pattern.split(enterRole);
+        role = Arrays.asList(array);
+
         if (validator.validatorRole(role)) {
             return role;
         } else {
             do {
-                System.out.println("Неверно указана role");
-                role = scanner.nextLine();
+                System.out.println("Неверно указана role. Try again.");
+                enterRole = scanner.nextLine();
+                role = Arrays.asList(pattern.split(enterRole));
             } while (!(validator.validatorRole(role)));
         }
         return role;
     }
 
-    public String newPhone(String message) {
+    public List newPhone(String message) {
         System.out.println(message);
-        String newPhone = scanner.nextLine();
-        if (validator.validatorPhone(newPhone)) {
-            return newPhone;
+        List<String> phone = new ArrayList<>() ;
+        String enterPhone = scanner.nextLine();
+        Pattern pattern = Pattern.compile(",");
+        String [] array = pattern.split(enterPhone);
+        phone = Arrays.asList(array);
+        if (validator.validatorPhone(phone)) {
+            return phone;
         } else {
             do {
                 System.out.println("Допускаются только цифры и один пробел. К примеру, 37576 9851569");
-                newPhone = scanner.nextLine();
-            } while (!(validator.validatorPhone(newPhone)));
+                phone = Arrays.asList(pattern.split(enterPhone));
+            } while (!(validator.validatorPhone(phone)));
         }
-        return newPhone;
+        return phone;
     }
-
 }
