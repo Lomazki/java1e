@@ -1,5 +1,9 @@
 package try2;
 
+import try2.validation.ValidationPhone;
+import try2.validation.ValidationRole;
+import try2.validation.Validator;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -10,14 +14,16 @@ public class UserService {
 
     Scanner scanner = new Scanner(System.in);
     Validator validator = new Validator();
+    ValidationRole validationRole = new ValidationRole();
+    ValidationPhone validationPhone = new ValidationPhone();
 
     public User create() {
 
         String name = newName("Please, enter name");
         String lastName = newName("Please, enter last name");
         String email = newEmail("Укажите email");
-        List role = newRole("Укажите role");
-        List phone = newPhone("Укажите номер телефона");
+        List role = newRole("Укажите role через запятую");
+        List phone = newPhone("Укажите номер или номера телефонов через запятую");
 
 //        String role = ... ;   // Сделать проверку на согласование ролей
 //        String phone = ... ;  // Сделать проверку на соответствие вводимого формата телефонов (допускается не более трех телефонов)
@@ -130,23 +136,32 @@ public class UserService {
     }
 
     public List<String> newRole(String message) {
-        List<String> role = new ArrayList<>() ;
+        List<String> roleList = new ArrayList<>() ;
         System.out.println(message);
         String enterRole = scanner.nextLine();
         Pattern pattern = Pattern.compile(",");
         String [] array = pattern.split(enterRole);
-        role = Arrays.asList(array);
+        roleList = Arrays.asList(array);
+//--------------------------------------------------------------------------
+        System.out.println(validationRole.isValidRoleName("Vacia"));
+//--------------------------------------------------------------------------
+        for (String nameRole : roleList) {
+            validationRole.isValidRoleName(nameRole);
+            validationRole.isRoleAdmin(nameRole);
+        }
 
-        if (validator.validatorRole(role)) {
-            return role;
+
+
+        if (validator.validatorRole(roleList)) {
+            return roleList;
         } else {
             do {
                 System.out.println("Неверно указана role. Try again.");
                 enterRole = scanner.nextLine();
-                role = Arrays.asList(pattern.split(enterRole));
-            } while (!(validator.validatorRole(role)));
+                roleList = Arrays.asList(pattern.split(enterRole));
+            } while (!(validator.validatorRole(roleList)));
         }
-        return role;
+        return roleList;
     }
 
     public List newPhone(String message) {

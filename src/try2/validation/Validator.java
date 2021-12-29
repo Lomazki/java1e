@@ -1,4 +1,4 @@
-package try2;
+package try2.validation;
 
 /*
      Класс для валидации
@@ -43,10 +43,6 @@ public class Validator {
         2) Есть ли уже ADMIN
         3) Соответствие уравней
          */
-
-
-
-
 //        Role.getRoleNames().contains(role.toUpperCase());
         return null;
     }

@@ -1,15 +1,5 @@
 package try2;
 
- /*
-    Диалог с пользователем
-
-    К примеру:
-     - ввел имя => валидация => сохранил в переменную
-     - ввел фамили => ...
-     ...
-      userService.create(name, lastName, ... )
- */
-
 import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
@@ -56,7 +46,7 @@ public class Reception {
                 break;
             case ("4"):             // Remove
                 repository.saveList(userService.remove(repository.readUserBook(), userService.newEmail("Введите почту юзера, которого будем удалять")));
-
+                // todo кажется этот метод удаляет всё в подряд. перепроверь!
                 break;
             case ("5"):             // ShowAll
                 List <User> allUser = repository.readUserBook();
