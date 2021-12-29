@@ -35,18 +35,6 @@ public class Validator {
         return matcher.find();
     }
 
-    public Boolean validatorRole(List<String> role) {
-
-        /*
-        Проверяем role на:
-        1) Корректность. Есть ли такая роль в enum
-        2) Есть ли уже ADMIN
-        3) Соответствие уравней
-         */
-//        Role.getRoleNames().contains(role.toUpperCase());
-        return null;
-    }
-
     public Boolean validatorPhone(List phone) {
 
         /*
