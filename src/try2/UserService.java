@@ -4,6 +4,7 @@ import try2.validation.ValidationPhone;
 import try2.validation.ValidationRole;
 import try2.validation.Validator;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
@@ -16,24 +17,20 @@ public class UserService {
     ValidationRole validationRole = new ValidationRole();
     ValidationPhone validationPhone = new ValidationPhone();
 
-    public User create() {
+    public User create() throws IOException, ClassNotFoundException {
 
         String name = newName("Please, enter name");
         String lastName = newName("Please, enter last name");
-        String email = newEmail("Укажите email");
-        List role = newRole("Укажите role через запятую");
-        List phone = newPhone("Укажите номер или номера телефонов через запятую");
-
-//        String role = ... ;   // Сделать проверку на согласование ролей
-//        String phone = ... ;  // Сделать проверку на соответствие вводимого формата телефонов (допускается не более трех телефонов)
-
-// Записать юзера в файл и отчитаться об успешной записи
+        String email = newEmail("Enter email");
+        List role = newRole("Enter role(s) separated by commas");
+        List phone = newPhone("Enter phone number(s) separated by commas");
 
         return new User(name, lastName, email, role, phone);
     }
 
     public User found(List<User> userList) {
-        String email = newEmail("Напишите email юзера, которого хотите найти");
+        System.out.println("Enter the user's email");
+        String email = scanner.nextLine().trim();
         for (User user : userList) {
             if (user.getEmail().equals(email)) {
                 return user;
@@ -46,7 +43,6 @@ public class UserService {
         for (User user : userList) {
             if (user.getEmail().equals(email)) {
                 userList.remove(user);
-                System.out.println("User was removed");
                 return userList;
             }
         }
@@ -54,19 +50,39 @@ public class UserService {
         return null;
     }
 
-    public User edit(User user) {
-        System.out.println("что будем редактировать?");
-        System.out.println("name - select 1");
-        System.out.println("last name - select 2");
-        System.out.println("email - select 3");
-        System.out.println("role - select 4");
-        System.out.println("phone - select 5");
+    public List remove(List<User> userList) {
+        System.out.println("Enter the email of the user that we will delete");
+        String email = scanner.nextLine();
+        for (User user : userList) {
+            if (user.getEmail().equals(email)) {
+                userList.remove(user);
+                return userList;
+            }
+        }
+        System.out.println("User not found");
+        return null;
+    }
 
-        // Пользователь ничего не выбрал !!!!!!!!!!!!!
+    public User edit(User user) throws IOException, ClassNotFoundException {
+        String choice;
+        System.out.println("What will we edit?");
+        do {
+            System.out.println("name - select 1");
+            System.out.println("last name - select 2");
+            System.out.println("email - select 3");
+            System.out.println("role - select 4");
+            System.out.println("phone - select 5");
+            System.out.println("Please, make your choice");
+            choice = scanner.nextLine().trim();
+        } while ((!(choice.equals("1") ||
+                choice.equals("2") ||
+                choice.equals("3") ||
+                choice.equals("4") ||
+                choice.equals("5"))));
 
-        switch (scanner.nextLine()) {       // надо удалить юзеров с одинаковыми почтами!!!!!!!
+        switch (choice) {
             case ("1"): {
-                return new User(newName("Введите новое имя"),
+                return new User(newName("Write a new name"),
                         user.getLastName(),
                         user.getEmail(),
                         user.getRole(),
@@ -74,7 +90,7 @@ public class UserService {
             }
             case ("2"): {
                 return new User(user.getFirstName(),
-                        newName("Введите новую фамилию"),
+                        newName("Write a new last name"),
                         user.getEmail(),
                         user.getRole(),
                         user.getPhoneNumber1());
@@ -82,7 +98,7 @@ public class UserService {
             case ("3"): {
                 return new User(user.getFirstName(),
                         user.getLastName(),
-                        newEmail("Введите новую почту"),
+                        newEmail("write a new email"), // надо удалить юзеров с одинаковыми почтами!!!!!!!
                         user.getRole(),
                         user.getPhoneNumber1());
             }
@@ -90,7 +106,7 @@ public class UserService {
                 return new User(user.getFirstName(),
                         user.getLastName(),
                         user.getEmail(),
-                        newRole("Введите новую роль"),
+                        newRole("Write a new role(s)"),
                         user.getPhoneNumber1());
             }
             case ("5"): {
@@ -98,7 +114,7 @@ public class UserService {
                         user.getLastName(),
                         user.getEmail(),
                         user.getRole(),
-                        newRole("Введите новый номер телефона"));
+                        newRole("Write a new phone number(es)"));
             }
         }
         return null;
@@ -113,23 +129,23 @@ public class UserService {
             return name;
         } else {
             do {
-                System.out.println("Допускаются только буквы латинского алфавита");
+                System.out.println("Only letters of the Latin alphabet are allowed");
                 name = scanner.nextLine();
             } while (!(validator.validatorName(name)));
         }
         return name;
     }
 
-    public String newEmail(String message) {
+    public String newEmail(String message) throws IOException, ClassNotFoundException {
         System.out.println(message);
-        String email = scanner.nextLine();
-        if (validator.validatorEmail(email)) {
+        String email = scanner.nextLine().trim();
+        if (validator.validatorEmail(email) && !validator.emailExist(email)) {
             return email;
         } else {
             do {
-                System.out.println("Неверно указана почта");
+                System.out.println("The email address is incorrect");
                 email = scanner.nextLine();
-            } while (!(validator.validatorEmail(email)));
+            } while (!(validator.validatorEmail(email)) || validator.emailExist(email));
         }
         return email;
     }
@@ -139,16 +155,16 @@ public class UserService {
         System.out.println(message);
         String enterRole = scanner.nextLine();
         Pattern pattern = Pattern.compile(",");
-        String [] array = pattern.split(enterRole);
+        String[] array = pattern.split(enterRole.trim().toUpperCase());
         roleList = Arrays.asList(array);
 
         if (validationRole.validate(roleList)) {
             return roleList;
         } else {
             do {
-                System.out.println("Неверно указана role. Try again.");
+                System.out.println("The role is incorrect. Try again.");
                 enterRole = scanner.nextLine();
-                roleList = Arrays.asList(pattern.split(enterRole));
+                roleList = Arrays.asList(pattern.split(enterRole.trim().toUpperCase()));
             } while (!(validationRole.validate(roleList)));
         }
         return roleList;
@@ -156,23 +172,18 @@ public class UserService {
 
     public List<String> newPhone(String message) {
         System.out.println(message);
-        List<String> phone;
         String enterPhone = scanner.nextLine();
         Pattern pattern = Pattern.compile(",");
-        String [] arrayPhone = pattern.split(enterPhone);
+        String[] arrayPhone = pattern.split(enterPhone.trim());
         if (validationPhone.validator(arrayPhone)) {
             return Arrays.asList(arrayPhone);
         } else {
             do {
                 System.out.println("Try again");
-                phone = Arrays.asList(pattern.split(enterPhone));
-            } while (!(validator.validatorPhone(phone)));
+                enterPhone = scanner.nextLine();
+                arrayPhone = (pattern.split(enterPhone));
+            } while (!(validationPhone.validator(arrayPhone)));
         }
-        return phone;
-    }
-
-    public static void main(String[] args) {
-        var userService = new UserService();
-        userService.newRole("enter role");
+        return Arrays.asList(arrayPhone);
     }
 }

@@ -1,19 +1,10 @@
 package try2.validation;
 
-/*
-     Класс для валидации
-        - name
-        - lastName
-        - email
-        - role
-        - phone
- */
+import try2.Repository;
+import try2.User;
+import try2.UserService;
 
-/*
-телефоны должны быть в виде 375 *****, к примеру, | 37500 1234567 |.
-email в виде *****@*****.*, к примеру, | any@email.com |. Т.е. достаточно проверки на ‘@’ и точку
- */
-
+import java.io.IOException;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -27,7 +18,6 @@ public class Validator {
         return matcher.find();
     }
 
-
     public Boolean validatorEmail(String email) {
         StringBuilder sb = new StringBuilder(email);
         Pattern pattern = Pattern.compile("^[a-zA-Z0-9.]+@[a-z]+\\.+[a-z]{2,5}$");
@@ -35,19 +25,16 @@ public class Validator {
         return matcher.find();
     }
 
-    public Boolean validatorPhone(List phone) {
-
-        /*
-        Проверяем на:
-        1) Корректность ввода самого номера
-        2) Количество (до трех номеров)
-         */
-//        StringBuilder sb = new StringBuilder(phone);
-//        Pattern pattern = Pattern.compile("^[0-9]{5} [0-9]{7}$");
-//        Matcher matcher = pattern.matcher(sb);
-
-        // добавить проверку на наличие/ограничение до 3х телефонов
-
-        return null;  //matcher.find();
+    public boolean emailExist(String email) throws IOException, ClassNotFoundException {
+        var repository = new Repository();
+        if (repository.readUserBook() == null) return false;
+        for (Object userObject : repository.readUserBook()) {
+            User user  = (User) userObject;
+            if (user.getEmail().equals(email)) {
+                System.out.println("The email already exists");
+                return true;
+            }
+        }
+        return false;
     }
 }

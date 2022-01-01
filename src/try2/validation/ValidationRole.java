@@ -16,7 +16,7 @@ public class ValidationRole {
 
     public boolean isValidRoleName(String roleName) {
         if (!Role.getRoleNames().contains(roleName.toUpperCase()))
-            System.out.println("Такой роли не существует");
+            System.out.println("There is no such role");
         return Role.getRoleNames().contains(roleName.toUpperCase());
     }
 
@@ -25,21 +25,20 @@ public class ValidationRole {
         for (String role : roles) {
             role = role.trim().toUpperCase();
             if (!isValidRoleName(role)) {
-                System.out.println("Такой роли не существует");
                 return false;
             }
 
             if ((Role.SUPER_ADMIN.getName().equals(role) && levelToRole.size() > 0
                     || (!Role.SUPER_ADMIN.getName().equals(role)
                     && levelToRole.get(Role.SUPER_ADMIN.getLevel()) != null))) {
-                System.out.println("Супер_Админ уже есть");
+                System.out.println("SUPER_ADMIN already exists");
              return false;
             }
 
             Role currentRole = Role.valueOf(role);
             int currentLevel = currentRole.level;           // currentLevel     относится к Role
             if (levelToRole.get(currentLevel) != null) {    // levelToRole.get  относится к Map.
-                System.out.println("Роль такого уравня уже есть");
+                System.out.println("There is already a role of this level");
                 return false;
             }
             levelToRole.put(currentLevel, currentRole);

@@ -7,10 +7,15 @@ import java.util.List;
 
 public class Repository {
 
-    List <User> userList = new ArrayList<>();              // Лист юзеров, который будет храниться в файле
+    List <User> userList;              // Лист юзеров, который будет храниться в файле
+
+    public Repository() throws IOException, ClassNotFoundException {
+        this.userList = readUserBook();
+    }
 
     public void saveUser (User newUser) throws IOException, ClassNotFoundException {
         if (readUserBook() == null) {
+            userList = new ArrayList<>();
             userList.add(newUser);
         }else userList.add(newUser);
         Path path = Path.of("resources", "userBook.out");

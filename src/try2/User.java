@@ -10,14 +10,14 @@ public class User implements Serializable {
     String lastName;
     String email;
     List<String> role;
-    List<String> phoneNumber1;
+    List<String> phone;
 
-    public User(String firstName, String lastName, String email, List role, List phoneNumber1) {
+    public User(String firstName, String lastName, String email, List role, List phone) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.role = role;
-        this.phoneNumber1 = phoneNumber1;
+        this.phone = phone;
     }
 
     public String getEmail() {
@@ -37,17 +37,16 @@ public class User implements Serializable {
     }
 
     public List getPhoneNumber1() {
-        return phoneNumber1;
+        return phone;
     }
 
     @Override
     public String toString() {
-        return "User{" +
-                "firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
-                ", role='" + role + '\'' +
-                ", phoneNumber1='" + phoneNumber1 + '\'' +
-                '}';
+        return "User " +
+                "{firstName = " + firstName +
+                ", \n      lastName  = " + lastName +
+                ", \n      email     = " + email +
+                ", \n      role      = " + role +
+                ", \n      phone     = " + phone + "} \n";
     }
 }
