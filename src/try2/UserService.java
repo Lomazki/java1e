@@ -170,4 +170,9 @@ public class UserService {
         }
         return phone;
     }
+
+    public static void main(String[] args) {
+        var userService = new UserService();
+        userService.newRole("enter role");
+    }
 }

@@ -23,6 +23,7 @@ public class ValidationRole {
     public boolean validate(List<String> roles) {
         Map<Integer, Role> levelToRole = new HashMap<>();
         for (String role : roles) {
+            role = role.trim().toUpperCase();
             if (!isValidRoleName(role)) {
                 System.out.println("Такой роли не существует");
                 return false;

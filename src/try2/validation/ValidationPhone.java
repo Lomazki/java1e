@@ -13,7 +13,7 @@ public class ValidationPhone {
         2) Количество (до трех номеров)
          */
         for (String phone : phones) {
-            StringBuilder sb = new StringBuilder(phone);
+            StringBuilder sb = new StringBuilder(phone.trim());
             Pattern pattern = Pattern.compile("^[0-9]{5} [0-9]{7}$");
             Matcher matcher = pattern.matcher(sb);
 

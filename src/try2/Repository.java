@@ -10,8 +10,9 @@ public class Repository {
     List <User> userList = new ArrayList<>();              // Лист юзеров, который будет храниться в файле
 
     public void saveUser (User newUser) throws IOException, ClassNotFoundException {
-        userList = readUserBook();
-        userList.add(newUser);
+        if (readUserBook() == null) {
+            userList.add(newUser);
+        }else userList.add(newUser);
         Path path = Path.of("resources", "userBook.out");
         try (ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(path.toFile()))) {
             objectOutputStream.writeObject(userList);
