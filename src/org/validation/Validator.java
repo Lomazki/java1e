@@ -1,11 +1,9 @@
-package try2.validation;
+package org.validation;
 
-import try2.Repository;
-import try2.User;
-import try2.UserService;
+import org.Repository;
+import org.User;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -29,7 +27,7 @@ public class Validator {
         var repository = new Repository();
         if (repository.readUserBook() == null) return false;
         for (Object userObject : repository.readUserBook()) {
-            User user  = (User) userObject;
+            User user = (User) userObject;
             if (user.getEmail().equals(email)) {
                 System.out.println("The email already exists");
                 return true;

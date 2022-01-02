@@ -1,18 +1,12 @@
-package try2.validation;
+package org.validation;
 
-import try2.Role;
+import org.Role;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class ValidationRole {
-
-            /*
-        Проверяем role на:
-        1) Корректность. Есть ли такая роль в enum
-        2) Есть ли уже ADMIN
-        3) Соответствие уравней (Совместимость ролей)
-         */
 
     public boolean isValidRoleName(String roleName) {
         if (!Role.getRoleNames().contains(roleName.toUpperCase()))
@@ -32,12 +26,12 @@ public class ValidationRole {
                     || (!Role.SUPER_ADMIN.getName().equals(role)
                     && levelToRole.get(Role.SUPER_ADMIN.getLevel()) != null))) {
                 System.out.println("SUPER_ADMIN already exists");
-             return false;
+                return false;
             }
 
             Role currentRole = Role.valueOf(role);
-            int currentLevel = currentRole.level;           // currentLevel     относится к Role
-            if (levelToRole.get(currentLevel) != null) {    // levelToRole.get  относится к Map.
+            int currentLevel = currentRole.level;
+            if (levelToRole.get(currentLevel) != null) {
                 System.out.println("There is already a role of this level");
                 return false;
             }

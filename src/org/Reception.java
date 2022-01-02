@@ -1,11 +1,10 @@
-package try2;
+package org;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
 
 public class Reception {
-
 
     Scanner scanner = new Scanner(System.in);
     UserService userService = new UserService();

@@ -1,11 +1,12 @@
-package try2;
+package org;
 
 import java.io.Serializable;
 import java.util.List;
 
 public class User implements Serializable {
 
-    private static final long serialVersionUID = -4811399492990244810L;
+    private static final long serialVersionUID = -4453135444776024875L;
+
     String firstName;
     String lastName;
     String email;

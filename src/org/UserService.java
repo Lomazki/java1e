@@ -1,8 +1,8 @@
-package try2;
+package org;
 
-import try2.validation.ValidationPhone;
-import try2.validation.ValidationRole;
-import try2.validation.Validator;
+import org.validation.ValidationPhone;
+import org.validation.ValidationRole;
+import org.validation.Validator;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -98,7 +98,7 @@ public class UserService {
             case ("3"): {
                 return new User(user.getFirstName(),
                         user.getLastName(),
-                        newEmail("write a new email"), // надо удалить юзеров с одинаковыми почтами!!!!!!!
+                        newEmail("write a new email"),
                         user.getRole(),
                         user.getPhoneNumber1());
             }

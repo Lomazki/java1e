@@ -1,4 +1,4 @@
-package try2;
+package org;
 
 import java.util.Arrays;
 import java.util.List;
@@ -30,7 +30,7 @@ public enum Role {
 
     public static List<String> getRoleNames() {
         return Arrays.stream(Role.values())
-                .map(Role::getName)                     // Обрати внимание на эту запись
+                .map(Role::getName)
                 .collect(Collectors.toList());
     }
 }
