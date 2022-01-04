@@ -7,35 +7,31 @@ import java.util.List;
 
 public class Repository {
 
-    List<User> userList;
+    private List<User> userList;
 
     public Repository() throws IOException, ClassNotFoundException {
         this.userList = readUserBook();
     }
 
-    public void saveUser(User newUser) throws IOException, ClassNotFoundException {
-        if (readUserBook() == null) {
+    private List<User> readUserBook() throws IOException, ClassNotFoundException {
+        Path path = Path.of("resources", "userBook.out");
+        try (ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(path.toFile()))) {
+            List<User> foundUser = (List<User>) objectInputStream.readObject();
+            return foundUser;
+        } catch (FileNotFoundException e) {
             userList = new ArrayList<>();
-            userList.add(newUser);
-        } else userList.add(newUser);
-        Path path = Path.of("resources", "userBook.txt");
-        try (ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(path.toFile()))) {
-            objectOutputStream.writeObject(userList);
-        }
-    }
-
-    public List readUserBook() throws IOException, ClassNotFoundException {
-        var path = Path.of("resources", "userBook.txt");
-        try (var objectInputStream = new ObjectInputStream(new FileInputStream(path.toFile()))) {
-            var foundUser = objectInputStream.readObject();
-            return (List) foundUser;
+            return userList;
         }
     }
 
     public void saveList(List<User> list) throws IOException {
-        Path path = Path.of("resources", "userBook.txt");
+        Path path = Path.of("resources", "userBook.out");
         try (ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(path.toFile()))) {
             objectOutputStream.writeObject(list);
         }
+    }
+
+    public List<User> getUserList() {
+        return userList;
     }
 }

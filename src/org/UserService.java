@@ -1,8 +1,6 @@
 package org;
 
-import org.validation.ValidationPhone;
-import org.validation.ValidationRole;
-import org.validation.Validator;
+import org.validation.*;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -13,24 +11,23 @@ import java.util.regex.Pattern;
 public class UserService {
 
     Scanner scanner = new Scanner(System.in);
-    Validator validator = new Validator();
-    ValidationRole validationRole = new ValidationRole();
-    ValidationPhone validationPhone = new ValidationPhone();
+    NameValidate nameValidate = new NameValidate();
+    RoleValidate roleValidate = new RoleValidate();
+    PhoneValidate phoneValidate = new PhoneValidate();
+    EmailValidate emailValidate = new EmailValidate();
 
     public User create() throws IOException, ClassNotFoundException {
 
         String name = newName("Please, enter name");
         String lastName = newName("Please, enter last name");
         String email = newEmail("Enter email");
-        List role = newRole("Enter role(s) separated by commas");
-        List phone = newPhone("Enter phone number(s) separated by commas");
+        List<String> role = newRole("Enter role(s) separated by commas");
+        List<String> phone = newPhone("Enter phone number(s) separated by commas");
 
         return new User(name, lastName, email, role, phone);
     }
 
-    public User found(List<User> userList) {
-        System.out.println("Enter the user's email");
-        String email = scanner.nextLine().trim();
+    public User found(List<User> userList, String email) {
         for (User user : userList) {
             if (user.getEmail().equals(email)) {
                 return user;
@@ -39,27 +36,13 @@ public class UserService {
         return null;
     }
 
-    public List remove(List<User> userList, String email) {
+    public List<User> remove(List<User> userList, String email) {
         for (User user : userList) {
             if (user.getEmail().equals(email)) {
                 userList.remove(user);
                 return userList;
             }
         }
-        System.out.println("User not found");
-        return null;
-    }
-
-    public List remove(List<User> userList) {
-        System.out.println("Enter the email of the user that we will delete");
-        String email = scanner.nextLine();
-        for (User user : userList) {
-            if (user.getEmail().equals(email)) {
-                userList.remove(user);
-                return userList;
-            }
-        }
-        System.out.println("User not found");
         return null;
     }
 
@@ -114,7 +97,7 @@ public class UserService {
                         user.getLastName(),
                         user.getEmail(),
                         user.getRole(),
-                        newRole("Write a new phone number(es)"));
+                        newPhone("Write a new phone number(es)"));
             }
         }
         return null;
@@ -124,14 +107,14 @@ public class UserService {
 
     public String newName(String message) {           // Метод подходит как для создания имени, так и фамилии
         System.out.println(message);
-        String name = scanner.nextLine();
-        if (validator.validatorName(name)) {
+        String name = scanner.nextLine().trim();
+        if (nameValidate.validator(name) == null) {
             return name;
         } else {
             do {
                 System.out.println("Only letters of the Latin alphabet are allowed");
-                name = scanner.nextLine();
-            } while (!(validator.validatorName(name)));
+                name = scanner.nextLine().trim();
+            } while ((nameValidate.validator(name)) != null);
         }
         return name;
     }
@@ -139,13 +122,13 @@ public class UserService {
     public String newEmail(String message) throws IOException, ClassNotFoundException {
         System.out.println(message);
         String email = scanner.nextLine().trim();
-        if (validator.validatorEmail(email) && !validator.emailExist(email)) {
+        if (emailValidate.validator(email) == null) {
             return email;
         } else {
             do {
-                System.out.println("The email address is incorrect");
-                email = scanner.nextLine();
-            } while (!(validator.validatorEmail(email)) || validator.emailExist(email));
+                System.out.println("Try again");
+                email = scanner.nextLine().trim();
+            } while (emailValidate.validator(email) != null);
         }
         return email;
     }
@@ -153,36 +136,36 @@ public class UserService {
     public List<String> newRole(String message) {
         List<String> roleList;
         System.out.println(message);
-        String enterRole = scanner.nextLine();
+        String enterRole = scanner.nextLine().trim();
         Pattern pattern = Pattern.compile(",");
         String[] array = pattern.split(enterRole.trim().toUpperCase());
         roleList = Arrays.asList(array);
 
-        if (validationRole.validate(roleList)) {
+        if ((roleValidate.validate(roleList)) == null) {
             return roleList;
         } else {
             do {
-                System.out.println("The role is incorrect. Try again.");
-                enterRole = scanner.nextLine();
+                System.out.println("Try again");
+                enterRole = scanner.nextLine().trim();
                 roleList = Arrays.asList(pattern.split(enterRole.trim().toUpperCase()));
-            } while (!(validationRole.validate(roleList)));
+            } while ((roleValidate.validate(roleList)) != null);
         }
         return roleList;
     }
 
     public List<String> newPhone(String message) {
         System.out.println(message);
-        String enterPhone = scanner.nextLine();
+        String enterPhone = scanner.nextLine().trim();
         Pattern pattern = Pattern.compile(",");
         String[] arrayPhone = pattern.split(enterPhone.trim());
-        if (validationPhone.validator(arrayPhone)) {
+        if ((phoneValidate.validator(Arrays.asList(arrayPhone))) == null) {
             return Arrays.asList(arrayPhone);
         } else {
             do {
                 System.out.println("Try again");
                 enterPhone = scanner.nextLine();
                 arrayPhone = (pattern.split(enterPhone));
-            } while (!(validationPhone.validator(arrayPhone)));
+            } while ((phoneValidate.validator(Arrays.asList(arrayPhone))) != null);
         }
         return Arrays.asList(arrayPhone);
     }

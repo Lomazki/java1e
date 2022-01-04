@@ -13,7 +13,7 @@ public class User implements Serializable {
     List<String> role;
     List<String> phone;
 
-    public User(String firstName, String lastName, String email, List role, List phone) {
+    public User(String firstName, String lastName, String email, List<String> role, List<String> phone) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -33,11 +33,11 @@ public class User implements Serializable {
         return lastName;
     }
 
-    public List getRole() {
+    public List<String> getRole() {
         return role;
     }
 
-    public List getPhoneNumber1() {
+    public List<String> getPhoneNumber1() {
         return phone;
     }
 
