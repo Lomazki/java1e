@@ -8,6 +8,9 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
+import static org.validation.ExceptionMessage.USER_IS_NULL;
+import static org.validation.ExceptionMessage.USER_LIST_IS_NULL;
+
 public class UserService {
 
     Scanner scanner = new Scanner(System.in);
@@ -28,6 +31,10 @@ public class UserService {
     }
 
     public User found(List<User> userList, String email) {
+        if (userList == null || userList.size() == 0) {
+            System.out.println(USER_LIST_IS_NULL);
+            return null;
+        }
         for (User user : userList) {
             if (user.getEmail().equals(email)) {
                 return user;
@@ -37,6 +44,10 @@ public class UserService {
     }
 
     public List<User> remove(List<User> userList, String email) {
+        if (userList == null || userList.size() == 0) {
+            System.out.println(USER_LIST_IS_NULL);
+            return null;
+        }
         for (User user : userList) {
             if (user.getEmail().equals(email)) {
                 userList.remove(user);
@@ -47,6 +58,11 @@ public class UserService {
     }
 
     public User edit(User user) throws IOException, ClassNotFoundException {
+
+        if (user == null) {
+            System.out.println(USER_IS_NULL);
+            return null;
+        }
         String choice;
         System.out.println("What will we edit?");
         do {
@@ -122,13 +138,14 @@ public class UserService {
     public String newEmail(String message) throws IOException, ClassNotFoundException {
         System.out.println(message);
         String email = scanner.nextLine().trim();
-        if (emailValidate.validator(email) == null) {
+
+        if (emailValidate.validatorEmail(email) == null && emailValidate.emailIsExist(email) == null) {
             return email;
         } else {
             do {
                 System.out.println("Try again");
                 email = scanner.nextLine().trim();
-            } while (emailValidate.validator(email) != null);
+            } while (emailValidate.validatorEmail(email) != null || emailValidate.emailIsExist(email) != null);
         }
         return email;
     }

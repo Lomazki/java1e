@@ -48,6 +48,6 @@ public class User implements Serializable {
                 ", \n      lastName  = " + lastName +
                 ", \n      email     = " + email +
                 ", \n      role      = " + role +
-                ", \n      phone     = " + phone + "} \n";
+                ", \n      phone     = " + phone + "}";
     }
 }

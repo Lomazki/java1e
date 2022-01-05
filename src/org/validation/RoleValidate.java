@@ -11,18 +11,21 @@ import static org.validation.ExceptionMessage.*;
 public class RoleValidate {
 
     private ValidatorError isValidRoleName(String roleName) {
-        return (Role.getRoleNames().contains(roleName.toUpperCase())) ?
-                null : new ValidatorError(String.format(ROLES_ABSENT, roleName));
+        return (roleName == null || !Role.getRoleNames().contains(roleName.toUpperCase())) ?
+                new ValidatorError(String.format(ROLES_ABSENT, roleName, Role.getRoleNames())) : null;
     }
 
     public ValidatorError validate(List<String> roles) {
+        if (roles == null || roles.size() == 0) {
+            return new ValidatorError(ROLES_LIST_IS_NULL);
+        }
         Map<Integer, Role> levelToRole = new HashMap<>();
         for (String role : roles) {
             role = role.toUpperCase();
-            if (isValidRoleName(role)!= null) {
-                ValidatorError validatorError = new ValidatorError("ошибка 23 строка");
-                System.out.println(validatorError.getMessage());
-                return validatorError;
+            ValidatorError isValidRoleName = isValidRoleName(role);
+            if (isValidRoleName != null) {
+                System.out.println(isValidRoleName.getMessage());
+                return isValidRoleName;
             }
 
             if ((Role.SUPER_ADMIN.getName().equals(role) && levelToRole.size() > 0

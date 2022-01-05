@@ -4,6 +4,7 @@ import org.validation.EmailValidate;
 import org.validation.ValidatorError;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -39,7 +40,8 @@ public class Reception {
         switch (choice) {
             case ("1"):             // Creat
                 User newUser = userService.create();
-                repository.getUserList().add(newUser);
+                List<User> userList = repository.getUserList();
+                userList.add(newUser);
                 repository.saveList(repository.getUserList());
                 System.out.println(String.format(USER_CREATED, newUser));
                 break;
@@ -47,7 +49,7 @@ public class Reception {
                 User searchedUser;
                 System.out.println("Enter the email of the user that we will to delete");
                 String emailFind = scanner.nextLine().trim();
-                ValidatorError findValidErrorEmail = emailValidate.validator(emailFind);
+                ValidatorError findValidErrorEmail = emailValidate.validatorEmail(emailFind);
                 if (findValidErrorEmail == null) {
                     searchedUser = userService.found(repository.getUserList(), emailFind);
                     if (searchedUser == null) {
@@ -55,15 +57,14 @@ public class Reception {
                     } else {
                         System.out.println(searchedUser);
                     }
-                }else {
+                } else {
                     System.out.println(findValidErrorEmail.getMessage());
                 }
                 break;
             case ("3"):             // Edit
                 System.out.println("Enter the email of the user that we will to edit");
                 String emailEdit = scanner.nextLine().trim();
-                ValidatorError editValidErrorEmail = emailValidate.validator(emailEdit);
-                if (editValidErrorEmail == null) {
+                if (emailValidate.validatorEmail(emailEdit) == null) {
                     User editableUser = userService.found(repository.getUserList(), emailEdit);
                     if (editableUser != null) {
                         User userEdited = userService.edit(editableUser);
@@ -74,26 +75,26 @@ public class Reception {
                     } else {
                         System.out.println(String.format(USER_NOT_FOUND, emailEdit));
                     }
-                } else {
-                    System.out.println(editValidErrorEmail.getMessage());
                 }
                 break;
             case ("4"):             // Remove
                 System.out.println("Enter the email of the user that we will to delete");
                 String emailRemove = scanner.nextLine().trim();
-                ValidatorError removeValidErrorEmail = emailValidate.validator(emailRemove);
-                if (removeValidErrorEmail == null){
+                if (emailValidate.validatorEmail(emailRemove) == null
+                        && userService.found(repository.getUserList(), emailRemove) != null) {
                     repository.saveList(userService.remove(repository.getUserList(), emailRemove));
                     System.out.println(String.format(USER_WAS_REMOVED, emailRemove));
-                    System.out.println("User was removed");
-                }else {
-                    System.out.println(removeValidErrorEmail.getMessage());
+                } else {
+                    System.out.println(String.format(USER_NOT_FOUND, emailRemove));
                 }
                 break;
             case ("5"):             // ShowAll
                 List<User> allUser = repository.getUserList();
                 for (User s : allUser) {
                     System.out.println(s);
+                }
+                if (allUser.isEmpty()){
+                    System.out.println("List is empty");
                 }
                 break;
         }

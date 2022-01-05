@@ -32,6 +32,9 @@ public class Repository {
     }
 
     public List<User> getUserList() {
+        if (userList == null){
+            this.userList = new ArrayList<>();
+        }
         return userList;
     }
 }
