@@ -1,6 +1,9 @@
 package org;
 
-import org.validation.*;
+import org.validation.impl.EmailValidateImpl;
+import org.validation.impl.NameValidateImpl;
+import org.validation.impl.PhoneValidateImpl;
+import org.validation.impl.RoleValidateImpl;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -8,16 +11,16 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
-import static org.validation.ExceptionMessage.USER_IS_NULL;
-import static org.validation.ExceptionMessage.USER_LIST_IS_NULL;
+import static org.validation.exception.ExceptionMessage.USER_IS_NULL;
+import static org.validation.exception.ExceptionMessage.USER_LIST_IS_NULL;
 
 public class UserService {
 
     Scanner scanner = new Scanner(System.in);
-    NameValidate nameValidate = new NameValidate();
-    RoleValidate roleValidate = new RoleValidate();
-    PhoneValidate phoneValidate = new PhoneValidate();
-    EmailValidate emailValidate = new EmailValidate();
+    NameValidateImpl nameValidate = new NameValidateImpl();
+    RoleValidateImpl roleValidate = new RoleValidateImpl();
+    PhoneValidateImpl phoneValidate = new PhoneValidateImpl();
+    EmailValidateImpl emailValidate = new EmailValidateImpl();
 
     public User create() throws IOException, ClassNotFoundException {
 

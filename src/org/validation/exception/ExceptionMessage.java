@@ -1,4 +1,4 @@
-package org.validation;
+package org.validation.exception;
 
 public class ExceptionMessage {
 

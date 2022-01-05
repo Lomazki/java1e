@@ -1,21 +1,20 @@
 package org;
 
-import org.validation.EmailValidate;
-import org.validation.ValidatorError;
+import org.validation.impl.EmailValidateImpl;
+import org.validation.exception.ValidatorError;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import static org.validation.ExceptionMessage.*;
+import static org.validation.exception.ExceptionMessage.*;
 
 public class Reception {
 
     Scanner scanner = new Scanner(System.in);
     UserService userService = new UserService();
     Repository repository = new Repository();
-    EmailValidate emailValidate = new EmailValidate();
+    EmailValidateImpl emailValidate = new EmailValidateImpl();
 
     public Reception() throws IOException, ClassNotFoundException {
     }
