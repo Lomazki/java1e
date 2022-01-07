@@ -1,4 +1,4 @@
-package org;
+package org.models;
 
 import java.util.Arrays;
 import java.util.List;
@@ -12,8 +12,8 @@ public enum Role {
     PROVIDER("PROVIDER", 2),
     SUPER_ADMIN("SUPER_ADMIN", 3);
 
-    public final String name;
-    public final int level;
+    private String name;
+    private int level;
 
     Role(String name, int level) {
         this.name = name;
@@ -32,5 +32,13 @@ public enum Role {
         return Arrays.stream(Role.values())
                 .map(Role::getName)
                 .collect(Collectors.toList());
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
     }
 }

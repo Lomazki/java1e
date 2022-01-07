@@ -1,4 +1,4 @@
-package org.validation.exception;
+package org.models;
 
 public class ValidatorError {
 
@@ -10,5 +10,9 @@ public class ValidatorError {
 
     public String getMessage() {
         return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 }

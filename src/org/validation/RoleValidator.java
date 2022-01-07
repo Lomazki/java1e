@@ -1,10 +1,10 @@
 package org.validation;
 
-import org.validation.exception.ValidatorError;
+import org.models.ValidatorError;
 
 import java.util.List;
 
-public interface RoleValidate {
+public interface RoleValidator {
 
     ValidatorError validate(List<String> roles);
 

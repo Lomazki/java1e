@@ -1,35 +1,29 @@
 package org;
 
-import org.validation.impl.EmailValidateImpl;
-import org.validation.exception.ValidatorError;
+import org.userService.impl.*;
+import org.repository.impl.RepositoryImpl;
+import org.models.ValidatorError;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.Scanner;
 
-import static org.validation.exception.ExceptionMessage.*;
+import static org.constants.ExceptionMessage.*;
 
 public class Reception {
 
-    Scanner scanner = new Scanner(System.in);
-    UserService userService = new UserService();
-    Repository repository = new Repository();
-    EmailValidateImpl emailValidate = new EmailValidateImpl();
+    ScannerWorker scannerWorker = new ScannerWorker();
+    RepositoryImpl repository = new RepositoryImpl();
 
-    public Reception() throws IOException, ClassNotFoundException {
-    }
+    SearchImpl search = new SearchImpl();
+    ShowAllImpl showAll = new ShowAllImpl();
+    RemoveImpl remove = new RemoveImpl();
+    CreateImpl create = new CreateImpl();
+    EditImpl edit = new EditImpl();
 
     void mainChoice() throws IOException, ClassNotFoundException {
         String choice;
         System.out.println("Hi! What would you like?");
         do {
-            System.out.println(" - Creat new user - select '1'");
-            System.out.println(" - Find/watch user - select '2'");
-            System.out.println(" - Edin user - select '3'");
-            System.out.println(" - Remove user - select '4'");
-            System.out.println(" - View all users - select '5'");
-            System.out.println("Please, make your choice");
-            choice = scanner.nextLine().trim();
+            choice = scannerWorker.mainSelect();
         } while (!(choice.equals("1") ||
                 choice.equals("2") ||
                 choice.equals("3") ||
@@ -38,62 +32,45 @@ public class Reception {
 
         switch (choice) {
             case ("1"):             // Creat
-                User newUser = userService.create();
-                List<User> userList = repository.getUserList();
-                userList.add(newUser);
-                repository.saveList(repository.getUserList());
-                System.out.println(String.format(USER_CREATED, newUser));
-                break;
-            case ("2"):             // Find
-                User searchedUser;
-                System.out.println("Enter the email of the user that we will to delete");
-                String emailFind = scanner.nextLine().trim();
-                ValidatorError findValidErrorEmail = emailValidate.validatorEmail(emailFind);
-                if (findValidErrorEmail == null) {
-                    searchedUser = userService.found(repository.getUserList(), emailFind);
-                    if (searchedUser == null) {
-                        System.out.println(String.format(USER_NOT_FOUND, emailFind));
-                    } else {
-                        System.out.println(searchedUser);
-                    }
+
+                ValidatorError createResult = create.runningCreate();
+                if (createResult == null) {
+                    repository.saveToUserBook();
+                    System.out.println(USER_CREATED);
                 } else {
-                    System.out.println(findValidErrorEmail.getMessage());
+                    System.out.println(createResult.getMessage());
                 }
                 break;
+            case ("2"):             // Find
+                ValidatorError findResult = search.findRunning();
+                System.out.println(findResult == null ?
+                        search.getSearchUser() : findResult.getMessage());
+                break;
             case ("3"):             // Edit
-                System.out.println("Enter the email of the user that we will to edit");
-                String emailEdit = scanner.nextLine().trim();
-                if (emailValidate.validatorEmail(emailEdit) == null) {
-                    User editableUser = userService.found(repository.getUserList(), emailEdit);
-                    if (editableUser != null) {
-                        User userEdited = userService.edit(editableUser);
-                        repository.getUserList().add(userEdited);
-                        List<User> newUserList = userService.remove(repository.getUserList(), editableUser.getEmail());
-                        repository.saveList(newUserList);
-                        System.out.println(String.format(USER_WAS_EDITED, userEdited));
-                    } else {
-                        System.out.println(String.format(USER_NOT_FOUND, emailEdit));
-                    }
+                ValidatorError editResult = edit.editRunning();
+                if (editResult != null) {
+                    System.out.println(editResult.getMessage());
+                } else {
+                    repository.saveToUserBook();
+                    System.out.println(USER_WAS_EDITED);
                 }
                 break;
             case ("4"):             // Remove
-                System.out.println("Enter the email of the user that we will to delete");
-                String emailRemove = scanner.nextLine().trim();
-                if (emailValidate.validatorEmail(emailRemove) == null
-                        && userService.found(repository.getUserList(), emailRemove) != null) {
-                    repository.saveList(userService.remove(repository.getUserList(), emailRemove));
-                    System.out.println(String.format(USER_WAS_REMOVED, emailRemove));
+                ValidatorError resultRemove = remove.removeRunning();
+
+                if (remove.getNewUserList() == null || remove.getNewUserList().size() == 0) {
+                    System.out.println(resultRemove.getMessage());
                 } else {
-                    System.out.println(String.format(USER_NOT_FOUND, emailRemove));
+                    repository.saveToUserBook();
+                    System.out.println(resultRemove.getMessage());
                 }
                 break;
             case ("5"):             // ShowAll
-                List<User> allUser = repository.getUserList();
-                for (User s : allUser) {
-                    System.out.println(s);
-                }
-                if (allUser.isEmpty()){
-                    System.out.println("List is empty");
+                ValidatorError resultShowAll = showAll.showAllUser();
+                if (resultShowAll != null) {
+                    System.out.println(resultShowAll.getMessage());
+                } else {
+                    break;
                 }
                 break;
         }

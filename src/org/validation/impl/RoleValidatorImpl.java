@@ -1,17 +1,16 @@
 package org.validation.impl;
 
-import org.Role;
-import org.validation.RoleValidate;
-import org.validation.exception.ValidatorError;
+import org.models.Role;
+import org.validation.RoleValidator;
+import org.models.ValidatorError;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.validation.exception.ExceptionMessage.*;
+import static org.constants.ExceptionMessage.*;
 
-public class RoleValidateImpl implements RoleValidate {
-
+public class RoleValidatorImpl implements RoleValidator {
 
     private ValidatorError isValidRoleName(String roleName) {
         return (roleName == null || !Role.getRoleNames().contains(roleName.toUpperCase())) ?
@@ -25,7 +24,7 @@ public class RoleValidateImpl implements RoleValidate {
         }
         Map<Integer, Role> levelToRole = new HashMap<>();
         for (String role : roles) {
-            role = role.toUpperCase();
+            role = role.trim().toUpperCase();
             ValidatorError isValidRoleName = isValidRoleName(role);
             if (isValidRoleName != null) {
                 System.out.println(isValidRoleName.getMessage());
@@ -39,7 +38,7 @@ public class RoleValidateImpl implements RoleValidate {
             }
 
             Role currentRole = Role.valueOf(role);
-            int currentLevel = currentRole.level;
+            int currentLevel = currentRole.getLevel();
             if (levelToRole.get(currentLevel) != null) {
                 return new ValidatorError(String.format(DOUBLE_LEVEL_ROLE, currentLevel));
             }

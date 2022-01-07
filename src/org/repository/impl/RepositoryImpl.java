@@ -1,33 +1,31 @@
-package org;
+package org.repository.impl;
+
+import org.models.User;
+import org.repository.Repository;
 
 import java.io.*;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Repository {
+public class RepositoryImpl implements Repository {
 
     private List<User> userList;
 
-    public Repository() throws IOException, ClassNotFoundException {
-        this.userList = readUserBook();
-    }
-
-    private List<User> readUserBook() throws IOException, ClassNotFoundException {
+    public void readUserBook() throws IOException, ClassNotFoundException {
         Path path = Path.of("resources", "userBook.out");
         try (ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(path.toFile()))) {
             List<User> foundUser = (List<User>) objectInputStream.readObject();
-            return foundUser;
+            this.userList = foundUser;
         } catch (FileNotFoundException e) {
             userList = new ArrayList<>();
-            return userList;
         }
     }
 
-    public void saveList(List<User> list) throws IOException {
+    public void saveToUserBook() throws IOException {
         Path path = Path.of("resources", "userBook.out");
         try (ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(path.toFile()))) {
-            objectOutputStream.writeObject(list);
+            objectOutputStream.writeObject(this.userList);
         }
     }
 
@@ -36,5 +34,9 @@ public class Repository {
             this.userList = new ArrayList<>();
         }
         return userList;
+    }
+
+    public void setUserList(List<User> userList) {
+        this.userList = userList;
     }
 }
