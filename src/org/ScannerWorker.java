@@ -7,27 +7,23 @@ public class ScannerWorker {
     Scanner scanner = new Scanner(System.in);
 
     public String editSelect() {
-        System.out.println("name - select 1");
-        System.out.println("last name - select 2");
-        System.out.println("email - select 3");
-        System.out.println("role - select 4");
-        System.out.println("phone - select 5");
+        System.out.println("What will we edit?");
+        System.out.println("press 1 - name");
+        System.out.println("press 2 - last name");
+        System.out.println("press 3 - email");
+        System.out.println("press 4 - role");
+        System.out.println("press 5 - phone");
         System.out.println("Please, make your choice");
         return scanner.nextLine().trim();
     }
 
     public String mainSelect() {
-        System.out.println(" - Creat new user - select '1'");
-        System.out.println(" - Find/watch user - select '2'");
-        System.out.println(" - Edin user - select '3'");
-        System.out.println(" - Remove user - select '4'");
-        System.out.println(" - View all users - select '5'");
+        System.out.println("press '1' - Creat new user ");
+        System.out.println("press '2' - Find/watch user ");
+        System.out.println("press '3' - Edin user ");
+        System.out.println("press '4' - Remove user ");
+        System.out.println("press '5' - View all users ");
         System.out.println("Please, make your choice");
-        return scanner.nextLine().trim();
-    }
-
-    public String getEmail(String message) {
-        System.out.println(message);
         return scanner.nextLine().trim();
     }
 

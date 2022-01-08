@@ -18,12 +18,12 @@ import static org.constants.ExceptionMessage.USER_LIST_IS_NULL;
 
 public class CreateImpl implements Create {
 
+    ScannerWorker scannerWorker = new ScannerWorker();
+    RepositoryImpl repository = new RepositoryImpl();
     NameValidatorImpl nameValidate = new NameValidatorImpl();
     EmailValidatorImpl emailValidate = new EmailValidatorImpl();
     RoleValidatorImpl roleValidate = new RoleValidatorImpl();
     PhoneValidatorImpl phoneValidate = new PhoneValidatorImpl();
-    RepositoryImpl repository = new RepositoryImpl();
-    ScannerWorker scannerWorker = new ScannerWorker();
 
 
     public ValidatorError runningCreate(){

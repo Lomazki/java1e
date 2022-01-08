@@ -22,7 +22,7 @@ public class RemoveImpl implements Remove {
         if (searchEmailValid == null) {
             repository.setUserList(remove(repository.getUserList(), search.getEmail()));
             this.newUserList = repository.getUserList();
-            return new ValidatorError(USER_WAS_REMOVED);
+            return null;
         } else {
             return searchEmailValid;
         }

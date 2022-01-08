@@ -27,13 +27,13 @@ public class EditImpl implements Edit {
         }
         List<User> userList = repository.getUserList();
         User userEdited = edit(search.getSearchUser());
-        if (userEdited == null){
+        if (userEdited == null) {
             return new ValidatorError(USER_NOT_EDITED);
+        } else {
+            userList.add(userEdited);
+            repository.setUserList(userList);
+            return null;
         }
-        userList.add(userEdited);
-        repository.setUserList(userList);
-
-        return null;
     }
 
     public User edit(User user) {
@@ -42,7 +42,6 @@ public class EditImpl implements Edit {
             return null;
         }
         String choice;
-        System.out.println("What will we edit?");
         do {
             choice = scannerWorker.editSelect();
         } while ((!(choice.equals("1") ||

@@ -1,10 +1,12 @@
 package org;
 
+import org.models.User;
 import org.userService.impl.*;
 import org.repository.impl.RepositoryImpl;
 import org.models.ValidatorError;
 
 import java.io.IOException;
+import java.util.List;
 
 import static org.constants.ExceptionMessage.*;
 
@@ -48,18 +50,18 @@ public class Reception {
                 break;
             case ("3"):             // Edit
                 ValidatorError editResult = edit.editRunning();
-                if (editResult != null) {
-                    System.out.println(editResult.getMessage());
-                } else {
+                if (editResult == null) {
                     repository.saveToUserBook();
                     System.out.println(USER_WAS_EDITED);
+                } else {
+                    System.out.println(editResult.getMessage());
                 }
                 break;
             case ("4"):             // Remove
                 ValidatorError resultRemove = remove.removeRunning();
-
-                if (remove.getNewUserList() == null || remove.getNewUserList().size() == 0) {
-                    System.out.println(resultRemove.getMessage());
+                List<User> newUserList = remove.getNewUserList();
+                if (newUserList == null || newUserList.size() == 0) {
+                    System.out.println(USER_WAS_REMOVED);
                 } else {
                     repository.saveToUserBook();
                     System.out.println(resultRemove.getMessage());

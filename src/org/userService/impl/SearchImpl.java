@@ -16,26 +16,27 @@ public class SearchImpl implements Search {
 
     User searchUser;
     String email;
-
     ValidatorError validatorError;
+
     RepositoryImpl repository = new RepositoryImpl();
     EmailValidatorImpl emailValidate = new EmailValidatorImpl();
     ScannerWorker scannerWorker = new ScannerWorker();
 
     public ValidatorError findRunning() throws IOException, ClassNotFoundException {
 
-        String email = enterEmail("Enter the user's email");
-        search(email);
+        String email = enterEmail();
+        this.searchUser = search(email);
 
         if (this.searchUser == null) {
-            return new ValidatorError(String.format(USER_NOT_FOUND, email));
+            this.validatorError = new ValidatorError(String.format(USER_NOT_FOUND, email));
+            return this.validatorError;
         }
         return null;
     }
 
-    public String enterEmail(String message) {
+    private String enterEmail() {
 
-        String email = scannerWorker.newUser(message);
+        String email = scannerWorker.newUser("Enter the user's email");
         ValidatorError resultEmailValid = emailValidate.validateEmail(email);
         if (resultEmailValid == null) {
             return email;
@@ -51,7 +52,7 @@ public class SearchImpl implements Search {
         return email;
     }
 
-    private void search(String email) throws IOException, ClassNotFoundException {
+    private User search(String email) throws IOException, ClassNotFoundException {
         List<User> userList = repository.getUserList();
         if (userList == null || userList.size() == 0) {
             repository.readUserBook();
@@ -60,8 +61,10 @@ public class SearchImpl implements Search {
         for (User user : userList) {
             if (user.getEmail().equals(email)) {
                 this.searchUser = user;
+                return user;
             }
         }
+        return null;
     }
 
     public User getSearchUser() {
