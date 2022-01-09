@@ -1,13 +1,13 @@
 package org.validation;
 
-import org.models.ValidatorError;
+import org.models.ValidationError;
 
 import java.io.IOException;
 
 public interface EmailValidator {
 
-    ValidatorError validateEmail(String email);
+    ValidationError validateNamedEmail(String email);
 
-    ValidatorError isEmailExists(String email) throws IOException, ClassNotFoundException;
+    ValidationError isEmailExists(String email) throws IOException, ClassNotFoundException;
 
 }

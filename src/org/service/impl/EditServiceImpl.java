@@ -1,42 +1,55 @@
-package org.userService.impl;
+package org.service.impl;
 
 import org.ScannerWorker;
-import org.userService.Edit;
+import org.service.EditService;
 import org.models.User;
-import org.models.ValidatorError;
+import org.models.ValidationError;
 import org.repository.impl.RepositoryImpl;
 
 import java.io.IOException;
 import java.util.List;
 
-import static org.constants.ExceptionMessage.USER_NOT_EDITED;
+import static org.constants.ExceptionMessage.USER_WAS_NOT_EDITED;
 
-public class EditImpl implements Edit {
+public class EditServiceImpl implements EditService {
 
-    SearchImpl search = new SearchImpl();
-    ScannerWorker scannerWorker = new ScannerWorker();
-    CreateImpl createUser = new CreateImpl();
+    private User editedUser;
 
-    RepositoryImpl repository = search.repository;      // Уточни про эту запись :)
+    private ScannerWorker scannerWorker;
+    private RepositoryImpl repository;
+    private SearchServiceImpl search;
+    private CreateServiceImpl createUser;
 
-    public ValidatorError editRunning() throws IOException, ClassNotFoundException {
+    public EditServiceImpl(ScannerWorker scannerWorker, RepositoryImpl repository, SearchServiceImpl search, CreateServiceImpl createUser) {
+        this.scannerWorker = scannerWorker;
+        this.repository = repository;
+        this.search = search;
+        this.createUser = createUser;
+    }
 
-        ValidatorError findForEdit = search.findRunning();
+    public ValidationError runEdit() throws IOException, ClassNotFoundException {
+
+        ValidationError findForEdit = search.runSearch();
+        User oldUser;
         if (findForEdit != null) {
             return findForEdit;
+        } else {
+            oldUser = search.getSearchUser();
         }
         List<User> userList = repository.getUserList();
         User userEdited = edit(search.getSearchUser());
         if (userEdited == null) {
-            return new ValidatorError(USER_NOT_EDITED);
+            return new ValidationError(USER_WAS_NOT_EDITED);
         } else {
             userList.add(userEdited);
+            userList.remove(oldUser);
             repository.setUserList(userList);
+            this.editedUser = userEdited;
             return null;
         }
     }
 
-    public User edit(User user) {
+    public User edit(User user) throws IOException, ClassNotFoundException {
 
         if (user == null) {
             return null;
@@ -90,4 +103,7 @@ public class EditImpl implements Edit {
         return null;
     }
 
+    public User getEditedUser() {
+        return editedUser;
+    }
 }

@@ -10,7 +10,12 @@ import java.util.List;
 
 public class RepositoryImpl implements Repository {
 
+    private static RepositoryImpl repository;
+
     private List<User> userList;
+
+    private RepositoryImpl() {
+    }
 
     public void readUserBook() throws IOException, ClassNotFoundException {
         Path path = Path.of("resources", "userBook.out");
@@ -29,8 +34,15 @@ public class RepositoryImpl implements Repository {
         }
     }
 
+    public static synchronized RepositoryImpl getRepository() {
+        if (repository == null) {
+            repository = new RepositoryImpl();
+        }
+        return repository;
+    }
+
     public List<User> getUserList() {
-        if (userList == null){
+        if (userList == null) {
             this.userList = new ArrayList<>();
         }
         return userList;

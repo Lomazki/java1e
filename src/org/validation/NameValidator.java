@@ -1,8 +1,9 @@
 package org.validation;
 
-import org.models.ValidatorError;
+import org.models.ValidationError;
 
 public interface NameValidator {
 
-    ValidatorError validate(String name);
+    ValidationError validate(String name);
+
 }

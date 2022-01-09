@@ -1,11 +1,11 @@
 package org.validation;
 
-import org.models.ValidatorError;
+import org.models.ValidationError;
 
 import java.util.List;
 
 public interface PhoneValidator {
 
-    ValidatorError validate(List<String> phones);
+    ValidationError validate(List<String> phones);
 
 }

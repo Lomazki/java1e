@@ -4,7 +4,11 @@ import java.util.Scanner;
 
 public class ScannerWorker {
 
-    Scanner scanner = new Scanner(System.in);
+    private Scanner scanner;
+
+    public ScannerWorker(Scanner scanner) {
+        this.scanner = scanner;
+    }
 
     public String editSelect() {
         System.out.println("What will we edit?");
@@ -18,6 +22,7 @@ public class ScannerWorker {
     }
 
     public String mainSelect() {
+        System.out.println("Hi! What would you like?");
         System.out.println("press '1' - Creat new user ");
         System.out.println("press '2' - Find/watch user ");
         System.out.println("press '3' - Edin user ");
