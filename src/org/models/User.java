@@ -7,18 +7,24 @@ public class User implements Serializable {
 
     private static final long serialVersionUID = -4453135444776024875L;
 
+    private long id;
     private String firstName;
     private String lastName;
     private String email;
     private List<String> role;
     private List<String> phone;
 
-    public User(String firstName, String lastName, String email, List<String> role, List<String> phone) {
+    public User(long id, String firstName, String lastName, String email, List<String> role, List<String> phone) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.role = role;
         this.phone = phone;
+    }
+
+    public long getId() {
+        return id;
     }
 
     public String getEmail() {

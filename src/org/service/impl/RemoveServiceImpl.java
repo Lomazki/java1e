@@ -3,7 +3,7 @@ package org.service.impl;
 import org.service.RemoveService;
 import org.models.User;
 import org.models.ValidationError;
-import org.repository.impl.RepositoryImpl;
+import org.repository.impl.UserRepositoryImpl;
 
 import java.io.IOException;
 import java.util.List;
@@ -13,9 +13,9 @@ public class RemoveServiceImpl implements RemoveService {
     private User removedUser;
 
     private SearchServiceImpl search;
-    private RepositoryImpl repository;
+    private UserRepositoryImpl repository;
 
-    public RemoveServiceImpl(SearchServiceImpl search, RepositoryImpl repository) {
+    public RemoveServiceImpl(SearchServiceImpl search, UserRepositoryImpl repository) {
         this.search = search;
         this.repository = repository;
     }
@@ -24,11 +24,11 @@ public class RemoveServiceImpl implements RemoveService {
         ValidationError searchEmailValid = search.runSearch();
         if (searchEmailValid == null) {
             this.removedUser = search.getSearchUser();
-            List<User> resultRemove = remove(repository.getUserList(), removedUser.getEmail());
+            List<User> resultRemove = remove(repository.getUsers(), removedUser.getEmail());
             if (resultRemove == null) {
                 return null;
             }
-            repository.setUserList(resultRemove);
+            repository.setUsers(resultRemove);
             return null;
         } else {
             return searchEmailValid;

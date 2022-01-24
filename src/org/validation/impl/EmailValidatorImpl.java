@@ -1,6 +1,6 @@
 package org.validation.impl;
 
-import org.repository.impl.RepositoryImpl;
+import org.repository.impl.UserRepositoryImpl;
 import org.models.User;
 import org.validation.EmailValidator;
 import org.models.ValidationError;
@@ -16,7 +16,7 @@ public class EmailValidatorImpl implements EmailValidator {
 
     private static final String PATTERN_EMAIL = "^[a-zA-Z0-9.]+@[a-z]+\\.+[a-z]{2,5}$";
 
-    public ValidationError validate(String email) throws IOException, ClassNotFoundException {
+    public ValidationError validate(String email) {
         if (validateNamedEmail(email) != null) {
             return validateNamedEmail(email);
         }
@@ -41,15 +41,15 @@ public class EmailValidatorImpl implements EmailValidator {
         }
     }
 
-    public ValidationError isEmailExists(String email) throws IOException, ClassNotFoundException {
+    public ValidationError isEmailExists(String email) {
         if (email == null) {
             return new ValidationError(EMAIL_IS_NULL);
         }
-        RepositoryImpl repository = RepositoryImpl.getRepository();
-        List<User> userList = repository.getUserList();
+        UserRepositoryImpl repository = UserRepositoryImpl.getRepository();
+        List<User> userList = repository.getUsers();
         if (userList == null || userList.isEmpty()) {
             repository.readUserBook();
-            userList = repository.getUserList();
+            userList = repository.getUsers();
             if (userList == null || userList.isEmpty()) {
                 return null;
             }

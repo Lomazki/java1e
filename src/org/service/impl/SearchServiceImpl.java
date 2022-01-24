@@ -4,7 +4,7 @@ import org.ScannerWorker;
 import org.service.SearchService;
 import org.models.User;
 import org.models.ValidationError;
-import org.repository.impl.RepositoryImpl;
+import org.repository.impl.UserRepositoryImpl;
 import org.validation.impl.EmailValidatorImpl;
 
 import java.io.IOException;
@@ -17,11 +17,11 @@ public class SearchServiceImpl implements SearchService {
     private User searchUser;
     private ValidationError validationError;
 
-    private RepositoryImpl repository;
+    private UserRepositoryImpl repository;
     private EmailValidatorImpl emailValidate;
     private ScannerWorker scannerWorker;
 
-    public SearchServiceImpl(RepositoryImpl repository, EmailValidatorImpl emailValidate, ScannerWorker scannerWorker) {
+    public SearchServiceImpl(UserRepositoryImpl repository, EmailValidatorImpl emailValidate, ScannerWorker scannerWorker) {
         this.repository = repository;
         this.emailValidate = emailValidate;
         this.scannerWorker = scannerWorker;
@@ -57,10 +57,10 @@ public class SearchServiceImpl implements SearchService {
     }
 
     private User search(String email) throws IOException, ClassNotFoundException {
-        List<User> userList = repository.getUserList();
+        List<User> userList = repository.getUsers();
         if (userList == null || userList.size() == 0) {
             repository.readUserBook();
-            userList = repository.getUserList();
+            userList = repository.getUsers();
         }
         for (User user : userList) {
             if (user.getEmail().equals(email)) {

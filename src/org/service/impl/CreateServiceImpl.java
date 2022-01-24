@@ -1,10 +1,15 @@
 package org.service.impl;
 
 import org.ScannerWorker;
+import org.repository.UserRepository;
 import org.service.CreateService;
 import org.models.User;
 import org.models.ValidationError;
-import org.repository.impl.RepositoryImpl;
+import org.repository.impl.UserRepositoryImpl;
+import org.validation.EmailValidator;
+import org.validation.NameValidator;
+import org.validation.PhoneValidator;
+import org.validation.RoleValidator;
 import org.validation.impl.EmailValidatorImpl;
 import org.validation.impl.NameValidatorImpl;
 import org.validation.impl.PhoneValidatorImpl;
@@ -13,6 +18,7 @@ import org.validation.impl.RoleValidatorImpl;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 public class CreateServiceImpl implements CreateService {
@@ -21,38 +27,53 @@ public class CreateServiceImpl implements CreateService {
     private ValidationError validationError;
 
     private ScannerWorker scannerWorker;
-    private RepositoryImpl repository;
-    private NameValidatorImpl nameValidate;
-    private EmailValidatorImpl emailValidate;
-    private RoleValidatorImpl roleValidate;
-    private PhoneValidatorImpl phoneValidate;
+    // программируем на типе интерфейса
+    private UserRepository userRepository;
+    private NameValidator nameValidate;
+    private EmailValidator emailValidate;
+    private RoleValidator roleValidate;
+    private PhoneValidator phoneValidate;
 
-    public CreateServiceImpl(ScannerWorker scannerWorker, RepositoryImpl repository, NameValidatorImpl nameValidate, EmailValidatorImpl emailValidate, RoleValidatorImpl roleValidate, PhoneValidatorImpl phoneValidate) {
+    public CreateServiceImpl(ScannerWorker scannerWorker, UserRepositoryImpl repository, NameValidatorImpl nameValidate, EmailValidatorImpl emailValidate, RoleValidatorImpl roleValidate, PhoneValidatorImpl phoneValidate) {
         this.scannerWorker = scannerWorker;
-        this.repository = repository;
+        this.userRepository = repository;
         this.nameValidate = nameValidate;
         this.emailValidate = emailValidate;
         this.roleValidate = roleValidate;
         this.phoneValidate = phoneValidate;
     }
 
-    public ValidationError runCreate() throws IOException, ClassNotFoundException {
+    public ValidationError runCreate() {
         this.newUser = createUser();
-        List<User> userList = repository.getUserList();
+        List<User> userList = userRepository.getUsers();
         userList.add(newUser);
-        repository.setUserList(userList);
+        userRepository.setUsers(userList);
         return null;
     }
 
-    public User createUser() throws IOException, ClassNotFoundException {
+    public User createUser() {
 
+        long id = newId();
         String name = newName("Please, enter name");
         String lastName = newLastName("Please, enter last name");
         String email = newEmail("Enter email");
         List<String> role = newRole("Enter role(s) separated by commas");
         List<String> phone = newPhone("Enter phone number(s) separated by commas");
 
-        return new User(name, lastName, email, role, phone);
+        return new User(id, name, lastName, email, role, phone);
+    }
+
+    private long newId() {
+
+        Map.Entry<Long, User> maxId  = null;
+        Map<Long, User> users = UserRepositoryImpl.getRepository().getIdToUser();
+        for (Map.Entry<Long, User> entry : users.entrySet()) {
+            if (maxId == null || entry.getValue().getId() > maxId.getKey()) {
+                maxId = entry;
+            }
+        }
+        assert maxId != null;
+        return maxId.getKey();
     }
 
     public String newName(String message) {           // Метод подходит как для создания имени, так и фамилии
@@ -76,7 +97,7 @@ public class CreateServiceImpl implements CreateService {
         return newName(message);
     }
 
-    public String newEmail(String message) throws IOException, ClassNotFoundException {
+    public String newEmail(String message) {
 
         String email = scannerWorker.newUser(message);
         ValidationError emailValid = emailValidate.validate(email);

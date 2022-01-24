@@ -1,6 +1,6 @@
 package org;
 
-import org.repository.Repository;
+import org.repository.UserRepository;
 import org.service.*;
 import org.models.ValidationError;
 
@@ -11,7 +11,7 @@ import static org.constants.ExceptionMessage.*;
 public class Reception {
 
     private ScannerWorker scannerWorker;
-    private Repository repository;
+    private UserRepository userRepository;
 
     private SearchService search;
     private ShowAllService showAll;
@@ -19,9 +19,9 @@ public class Reception {
     private CreateService create;
     private EditService edit;
 
-    public Reception(ScannerWorker scannerWorker, Repository repository, SearchService search, ShowAllService showAll, RemoveService remove, CreateService create, EditService edit) {
+    public Reception(ScannerWorker scannerWorker, UserRepository userRepository, SearchService search, ShowAllService showAll, RemoveService remove, CreateService create, EditService edit) {
         this.scannerWorker = scannerWorker;
-        this.repository = repository;
+        this.userRepository = userRepository;
         this.search = search;
         this.showAll = showAll;
         this.remove = remove;
@@ -44,7 +44,7 @@ public class Reception {
             case ("1"):             // Creat
                 ValidationError createResult = create.runCreate();
                 if (createResult == null) {
-                    repository.saveToUserBook();
+                    userRepository.save();
                     System.out.println(String.format(USER_CREATED, create.getNewUser()));
                 } else {
                     System.out.println(createResult.getMessage());
@@ -58,7 +58,7 @@ public class Reception {
             case ("3"):             // Edit
                 ValidationError editResult = edit.runEdit();
                 if (editResult == null) {
-                    repository.saveToUserBook();
+                    userRepository.save();
                     System.out.println(String.format(USER_WAS_EDITED, edit.getEditedUser()));
                 } else {
                     System.out.println(editResult.getMessage());
@@ -67,7 +67,7 @@ public class Reception {
             case ("4"):             // Remove
                 ValidationError resultRemove = remove.runRemove();
                 if (resultRemove == null) {
-                    repository.saveToUserBook();
+                    userRepository.save();
                     System.out.println(String.format(USER_WAS_REMOVED, remove.getRemovedUser()));
                 } else {
                     System.out.println(resultRemove.getMessage());

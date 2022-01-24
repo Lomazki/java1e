@@ -4,7 +4,7 @@ import org.ScannerWorker;
 import org.service.EditService;
 import org.models.User;
 import org.models.ValidationError;
-import org.repository.impl.RepositoryImpl;
+import org.repository.impl.UserRepositoryImpl;
 
 import java.io.IOException;
 import java.util.List;
@@ -16,11 +16,11 @@ public class EditServiceImpl implements EditService {
     private User editedUser;
 
     private ScannerWorker scannerWorker;
-    private RepositoryImpl repository;
+    private UserRepositoryImpl repository;
     private SearchServiceImpl search;
     private CreateServiceImpl createUser;
 
-    public EditServiceImpl(ScannerWorker scannerWorker, RepositoryImpl repository, SearchServiceImpl search, CreateServiceImpl createUser) {
+    public EditServiceImpl(ScannerWorker scannerWorker, UserRepositoryImpl repository, SearchServiceImpl search, CreateServiceImpl createUser) {
         this.scannerWorker = scannerWorker;
         this.repository = repository;
         this.search = search;
@@ -36,14 +36,14 @@ public class EditServiceImpl implements EditService {
         } else {
             oldUser = search.getSearchUser();
         }
-        List<User> userList = repository.getUserList();
+        List<User> userList = repository.getUsers();
         User userEdited = edit(search.getSearchUser());
         if (userEdited == null) {
             return new ValidationError(USER_WAS_NOT_EDITED);
         } else {
             userList.add(userEdited);
             userList.remove(oldUser);
-            repository.setUserList(userList);
+            repository.setUsers(userList);
             this.editedUser = userEdited;
             return null;
         }

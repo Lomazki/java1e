@@ -1,6 +1,6 @@
 package org;
 
-import org.repository.impl.RepositoryImpl;
+import org.repository.impl.UserRepositoryImpl;
 import org.service.impl.*;
 import org.validation.impl.EmailValidatorImpl;
 import org.validation.impl.NameValidatorImpl;
@@ -18,26 +18,26 @@ public class Runner implements Serializable {
 
         Reception reception = new Reception(
                 new ScannerWorker(new Scanner(System.in)),
-                RepositoryImpl.getRepository(),
+                UserRepositoryImpl.getRepository(),
                 new SearchServiceImpl(
-                        RepositoryImpl.getRepository(),
+                        UserRepositoryImpl.getRepository(),
                         new EmailValidatorImpl(),
                         new ScannerWorker(new Scanner(System.in))
                 ),
                 new ShowAllServiceImpl(
-                        RepositoryImpl.getRepository()
+                        UserRepositoryImpl.getRepository()
                 ),
                 new RemoveServiceImpl(
                         new SearchServiceImpl(
-                                RepositoryImpl.getRepository(),
+                                UserRepositoryImpl.getRepository(),
                                 new EmailValidatorImpl(),
                                 new ScannerWorker(new Scanner(System.in))
                         ),
-                        RepositoryImpl.getRepository()
+                        UserRepositoryImpl.getRepository()
                 ),
                 new CreateServiceImpl(
                         new ScannerWorker(new Scanner(System.in)),
-                        RepositoryImpl.getRepository(),
+                        UserRepositoryImpl.getRepository(),
                         new NameValidatorImpl(),
                         new EmailValidatorImpl(),
                         new RoleValidatorImpl(),
@@ -45,15 +45,15 @@ public class Runner implements Serializable {
                 ),
                 new EditServiceImpl(
                         new ScannerWorker(new Scanner(System.in)),
-                        RepositoryImpl.getRepository(),
+                        UserRepositoryImpl.getRepository(),
                         new SearchServiceImpl(
-                                RepositoryImpl.getRepository(),
+                                UserRepositoryImpl.getRepository(),
                                 new EmailValidatorImpl(),
                                 new ScannerWorker(new Scanner(System.in))
                         ),
                         new CreateServiceImpl(
                                 new ScannerWorker(new Scanner(System.in)),
-                                RepositoryImpl.getRepository(),
+                                UserRepositoryImpl.getRepository(),
                                 new NameValidatorImpl(),
                                 new EmailValidatorImpl(),
                                 new RoleValidatorImpl(),
