@@ -1,14 +1,14 @@
-package org.validation.impl;
+package src.org.validation.impl;
 
-import org.models.Role;
-import org.validation.RoleValidator;
-import org.models.ValidationError;
+import src.org.models.Role;
+import src.org.validation.RoleValidator;
+import src.org.models.ValidationError;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.constants.ExceptionMessage.*;
+import static src.org.constants.ExceptionMessage.*;
 
 public class RoleValidatorImpl implements RoleValidator {
 

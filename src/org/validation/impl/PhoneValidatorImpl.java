@@ -1,13 +1,13 @@
-package org.validation.impl;
+package src.org.validation.impl;
 
-import org.validation.PhoneValidator;
-import org.models.ValidationError;
+import src.org.validation.PhoneValidator;
+import src.org.models.ValidationError;
 
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static org.constants.ExceptionMessage.*;
+import static src.org.constants.ExceptionMessage.*;
 
 public class PhoneValidatorImpl implements PhoneValidator {
 

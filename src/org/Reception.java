@@ -1,12 +1,10 @@
-package org;
+package src.org;
 
-import org.repository.UserRepository;
-import org.service.*;
-import org.models.ValidationError;
+import src.org.repository.UserRepository;
+import src.org.service.*;
+import src.org.models.ValidationError;
 
-import java.io.IOException;
-
-import static org.constants.ExceptionMessage.*;
+import static src.org.constants.ExceptionMessage.*;
 
 public class Reception {
 

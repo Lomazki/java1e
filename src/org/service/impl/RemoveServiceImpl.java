@@ -1,13 +1,11 @@
-package org.service.impl;
+package src.org.service.impl;
 
-import org.service.RemoveService;
-import org.models.User;
-import org.models.ValidationError;
-import org.repository.impl.UserRepositoryImpl;
+import src.org.service.RemoveService;
+import src.org.models.User;
+import src.org.models.ValidationError;
+import src.org.repository.impl.UserRepositoryImpl;
 
-import java.io.IOException;
 import java.util.Collection;
-import java.util.List;
 
 public class RemoveServiceImpl implements RemoveService {
 

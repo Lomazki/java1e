@@ -1,4 +1,4 @@
-package org.constants;
+package src.org.constants;
 
 public class ExceptionMessage {
 

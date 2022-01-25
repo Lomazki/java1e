@@ -1,6 +1,6 @@
-package org.service;
+package src.org.service;
 
-import org.models.User;
+import src.org.models.User;
 
 import java.util.Collection;
 

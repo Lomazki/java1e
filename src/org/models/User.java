@@ -1,4 +1,4 @@
-package org.models;
+package src.org.models;
 
 import java.io.Serializable;
 import java.util.List;

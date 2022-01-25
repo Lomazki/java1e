@@ -1,9 +1,9 @@
-package org.repository.impl;
+package src.org.repository.impl;
 
-import org.exceptions.UncheckedException;
-import org.models.User;
-import org.repository.UserRepository;
-import org.service.EditService;
+import src.org.exceptions.UncheckedException;
+import src.org.models.User;
+import src.org.repository.UserRepository;
+import src.org.service.EditService;
 
 import java.io.*;
 import java.nio.file.Path;

@@ -1,8 +1,8 @@
-package org.service.impl;
+package src.org.service.impl;
 
-import org.models.User;
-import org.repository.UserRepository;
-import org.service.UserService;
+import src.org.models.User;
+import src.org.repository.UserRepository;
+import src.org.service.UserService;
 
 import java.util.Collection;
 

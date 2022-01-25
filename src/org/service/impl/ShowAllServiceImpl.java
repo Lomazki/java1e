@@ -1,15 +1,13 @@
-package org.service.impl;
+package src.org.service.impl;
 
-import org.service.ShowAllService;
-import org.models.User;
-import org.models.ValidationError;
-import org.repository.impl.UserRepositoryImpl;
+import src.org.service.ShowAllService;
+import src.org.models.User;
+import src.org.models.ValidationError;
+import src.org.repository.impl.UserRepositoryImpl;
 
-import java.io.IOException;
 import java.util.Collection;
-import java.util.List;
 
-import static org.constants.ExceptionMessage.USER_LIST_IS_NULL;
+import static src.org.constants.ExceptionMessage.USER_LIST_IS_NULL;
 
 public class ShowAllServiceImpl implements ShowAllService {
 

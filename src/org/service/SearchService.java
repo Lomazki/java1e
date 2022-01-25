@@ -1,7 +1,7 @@
-package org.service;
+package src.org.service;
 
-import org.models.User;
-import org.models.ValidationError;
+import src.org.models.User;
+import src.org.models.ValidationError;
 
 public interface SearchService {
 

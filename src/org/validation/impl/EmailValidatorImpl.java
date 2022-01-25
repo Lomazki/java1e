@@ -1,17 +1,15 @@
-package org.validation.impl;
+package src.org.validation.impl;
 
-import org.repository.impl.UserRepositoryImpl;
-import org.models.User;
-import org.validation.EmailValidator;
-import org.models.ValidationError;
+import src.org.repository.impl.UserRepositoryImpl;
+import src.org.models.User;
+import src.org.validation.EmailValidator;
+import src.org.models.ValidationError;
 
-import java.io.IOException;
 import java.util.Collection;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static org.constants.ExceptionMessage.*;
+import static src.org.constants.ExceptionMessage.*;
 
 public class EmailValidatorImpl implements EmailValidator {
 

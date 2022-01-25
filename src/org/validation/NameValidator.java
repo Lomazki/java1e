@@ -1,6 +1,6 @@
-package org.validation;
+package src.org.validation;
 
-import org.models.ValidationError;
+import src.org.models.ValidationError;
 
 public interface NameValidator {
 

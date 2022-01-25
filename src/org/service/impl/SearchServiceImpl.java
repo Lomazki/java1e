@@ -1,15 +1,15 @@
-package org.service.impl;
+package src.org.service.impl;
 
-import org.ScannerWorker;
-import org.service.SearchService;
-import org.models.User;
-import org.models.ValidationError;
-import org.repository.impl.UserRepositoryImpl;
-import org.validation.impl.EmailValidatorImpl;
+import src.org.ScannerWorker;
+import src.org.service.SearchService;
+import src.org.models.User;
+import src.org.models.ValidationError;
+import src.org.repository.impl.UserRepositoryImpl;
+import src.org.validation.impl.EmailValidatorImpl;
 
 import java.util.Collection;
 
-import static org.constants.ExceptionMessage.USER_WAS_NOT_FOUND;
+import static src.org.constants.ExceptionMessage.USER_WAS_NOT_FOUND;
 
 public class SearchServiceImpl implements SearchService {
 

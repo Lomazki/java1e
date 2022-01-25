@@ -1,6 +1,6 @@
-package org.service;
+package src.org.service;
 
-import org.models.ValidationError;
+import src.org.models.ValidationError;
 
 public interface ShowAllService {
 

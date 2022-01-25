@@ -1,9 +1,8 @@
-package org.service;
+package src.org.service;
 
-import org.models.User;
-import org.models.ValidationError;
+import src.org.models.User;
+import src.org.models.ValidationError;
 
-import java.io.IOException;
 import java.util.List;
 
 public interface CreateService {
