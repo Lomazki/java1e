@@ -7,7 +7,7 @@ import java.io.IOException;
 
 public interface RemoveService {
 
-    ValidationError runRemove() throws IOException, ClassNotFoundException;
+    ValidationError runRemove();
 
     User getRemovedUser();
 

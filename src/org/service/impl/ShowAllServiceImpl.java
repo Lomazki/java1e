@@ -6,6 +6,7 @@ import org.models.ValidationError;
 import org.repository.impl.UserRepositoryImpl;
 
 import java.io.IOException;
+import java.util.Collection;
 import java.util.List;
 
 import static org.constants.ExceptionMessage.USER_LIST_IS_NULL;
@@ -19,11 +20,9 @@ public class ShowAllServiceImpl implements ShowAllService {
         this.repository = repository;
     }
 
-    public ValidationError showAllUser() throws IOException, ClassNotFoundException {
-        repository.readUserBook();
-        List<User> allUser = repository.getUsers();
+    public ValidationError showAllUser() {
+        Collection<User> allUser = repository.getAll();
         if (allUser == null || allUser.isEmpty()) {
-            repository.readUserBook();
             return new ValidationError(USER_LIST_IS_NULL);
         }
         for (User s : allUser) {

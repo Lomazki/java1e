@@ -1,10 +1,10 @@
-package org.repository;
+package org.service;
 
 import org.models.User;
 
 import java.util.Collection;
 
-public interface UserRepository {
+public interface UserService {
 
     void save(User user);
 
@@ -12,7 +12,7 @@ public interface UserRepository {
 
     Collection<User> getAll();
 
-    boolean edit(User user);
+    void edit(User user);
 
     boolean delete(User user);
 }

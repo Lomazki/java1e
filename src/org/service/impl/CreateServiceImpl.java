@@ -17,6 +17,7 @@ import org.validation.impl.RoleValidatorImpl;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -45,9 +46,9 @@ public class CreateServiceImpl implements CreateService {
 
     public ValidationError runCreate() {
         this.newUser = createUser();
-        List<User> userList = userRepository.getUsers();
+        Collection<User> userList = userRepository.getAll();
         userList.add(newUser);
-        userRepository.setUsers(userList);
+//        userRepository.setUsers(userList);
         return null;
     }
 
@@ -65,15 +66,16 @@ public class CreateServiceImpl implements CreateService {
 
     private long newId() {
 
-        Map.Entry<Long, User> maxId  = null;
-        Map<Long, User> users = UserRepositoryImpl.getRepository().getIdToUser();
-        for (Map.Entry<Long, User> entry : users.entrySet()) {
-            if (maxId == null || entry.getValue().getId() > maxId.getKey()) {
-                maxId = entry;
+        long idMax = 0;
+        Collection<User> users = userRepository.getAll();
+
+        for (User user : users) {
+            if (idMax == 0 || user.getId() > idMax) {
+                idMax = user.getId();
             }
         }
-        assert maxId != null;
-        return maxId.getKey();
+
+        return ++idMax;
     }
 
     public String newName(String message) {           // Метод подходит как для создания имени, так и фамилии

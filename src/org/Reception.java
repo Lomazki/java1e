@@ -29,7 +29,7 @@ public class Reception {
         this.edit = edit;
     }
 
-    void mainChoice() throws IOException, ClassNotFoundException {
+    void mainChoice() {
 
         String choice;
         do {
@@ -44,7 +44,7 @@ public class Reception {
             case ("1"):             // Creat
                 ValidationError createResult = create.runCreate();
                 if (createResult == null) {
-                    userRepository.save();
+//                    userRepository.save();
                     System.out.println(String.format(USER_CREATED, create.getNewUser()));
                 } else {
                     System.out.println(createResult.getMessage());
@@ -58,7 +58,7 @@ public class Reception {
             case ("3"):             // Edit
                 ValidationError editResult = edit.runEdit();
                 if (editResult == null) {
-                    userRepository.save();
+//                    userRepository.save();
                     System.out.println(String.format(USER_WAS_EDITED, edit.getEditedUser()));
                 } else {
                     System.out.println(editResult.getMessage());
@@ -67,7 +67,7 @@ public class Reception {
             case ("4"):             // Remove
                 ValidationError resultRemove = remove.runRemove();
                 if (resultRemove == null) {
-                    userRepository.save();
+//                    userRepository.save();
                     System.out.println(String.format(USER_WAS_REMOVED, remove.getRemovedUser()));
                 } else {
                     System.out.println(resultRemove.getMessage());

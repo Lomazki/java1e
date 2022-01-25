@@ -6,6 +6,7 @@ import org.models.ValidationError;
 import org.repository.impl.UserRepositoryImpl;
 
 import java.io.IOException;
+import java.util.Collection;
 import java.util.List;
 
 public class RemoveServiceImpl implements RemoveService {
@@ -20,22 +21,22 @@ public class RemoveServiceImpl implements RemoveService {
         this.repository = repository;
     }
 
-    public ValidationError runRemove() throws IOException, ClassNotFoundException {
+    public ValidationError runRemove() {
         ValidationError searchEmailValid = search.runSearch();
         if (searchEmailValid == null) {
             this.removedUser = search.getSearchUser();
-            List<User> resultRemove = remove(repository.getUsers(), removedUser.getEmail());
+            Collection<User> resultRemove = remove(repository.getAll(), removedUser.getEmail());
             if (resultRemove == null) {
                 return null;
             }
-            repository.setUsers(resultRemove);
+//            repository.setUsers(resultRemove);
             return null;
         } else {
             return searchEmailValid;
         }
     }
 
-    private List<User> remove(List<User> userList, String email) {
+    private Collection<User> remove(Collection<User> userList, String email) {
         if (userList == null || userList.size() == 0) {
             return null;
         }

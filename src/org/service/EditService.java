@@ -7,9 +7,9 @@ import java.io.IOException;
 
 public interface EditService {
 
-    ValidationError runEdit() throws IOException, ClassNotFoundException;
+    ValidationError runEdit();
 
-    User edit(User user) throws IOException, ClassNotFoundException;
+    User edit(User user);
 
     User getEditedUser();
 

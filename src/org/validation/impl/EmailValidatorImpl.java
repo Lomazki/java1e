@@ -6,6 +6,7 @@ import org.validation.EmailValidator;
 import org.models.ValidationError;
 
 import java.io.IOException;
+import java.util.Collection;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -46,10 +47,9 @@ public class EmailValidatorImpl implements EmailValidator {
             return new ValidationError(EMAIL_IS_NULL);
         }
         UserRepositoryImpl repository = UserRepositoryImpl.getRepository();
-        List<User> userList = repository.getUsers();
+        Collection<User> userList = repository.getAll();
         if (userList == null || userList.isEmpty()) {
-            repository.readUserBook();
-            userList = repository.getUsers();
+            userList = repository.getAll();
             if (userList == null || userList.isEmpty()) {
                 return null;
             }

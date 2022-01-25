@@ -7,6 +7,7 @@ import org.models.ValidationError;
 import org.repository.impl.UserRepositoryImpl;
 
 import java.io.IOException;
+import java.util.Collection;
 import java.util.List;
 
 import static org.constants.ExceptionMessage.USER_WAS_NOT_EDITED;
@@ -27,7 +28,7 @@ public class EditServiceImpl implements EditService {
         this.createUser = createUser;
     }
 
-    public ValidationError runEdit() throws IOException, ClassNotFoundException {
+    public ValidationError runEdit() {
 
         ValidationError findForEdit = search.runSearch();
         User oldUser;
@@ -36,20 +37,20 @@ public class EditServiceImpl implements EditService {
         } else {
             oldUser = search.getSearchUser();
         }
-        List<User> userList = repository.getUsers();
+        Collection<User> userList = repository.getAll();
         User userEdited = edit(search.getSearchUser());
         if (userEdited == null) {
             return new ValidationError(USER_WAS_NOT_EDITED);
         } else {
             userList.add(userEdited);
             userList.remove(oldUser);
-            repository.setUsers(userList);
+//            repository.setUsers(userList);
             this.editedUser = userEdited;
             return null;
         }
     }
 
-    public User edit(User user) throws IOException, ClassNotFoundException {
+    public User edit(User user){
 
         if (user == null) {
             return null;
@@ -65,35 +66,40 @@ public class EditServiceImpl implements EditService {
 
         switch (choice) {
             case ("1"): {
-                return new User(createUser.newName("Write a new name"),
+                return new User(user.getId(),
+                        createUser.newName("Write a new name"),
                         user.getLastName(),
                         user.getEmail(),
                         user.getRole(),
                         user.getPhoneNumber1());
             }
             case ("2"): {
-                return new User(user.getFirstName(),
+                return new User(user.getId(),
+                        user.getFirstName(),
                         createUser.newLastName("Write a new last name"),
                         user.getEmail(),
                         user.getRole(),
                         user.getPhoneNumber1());
             }
             case ("3"): {
-                return new User(user.getFirstName(),
+                return new User(user.getId(),
+                        user.getFirstName(),
                         user.getLastName(),
                         createUser.newEmail("write a new email"),
                         user.getRole(),
                         user.getPhoneNumber1());
             }
             case ("4"): {
-                return new User(user.getFirstName(),
+                return new User(user.getId(),
+                        user.getFirstName(),
                         user.getLastName(),
                         user.getEmail(),
                         createUser.newRole("Write a new role(s)"),
                         user.getPhoneNumber1());
             }
             case ("5"): {
-                return new User(user.getFirstName(),
+                return new User(user.getId(),
+                        user.getFirstName(),
                         user.getLastName(),
                         user.getEmail(),
                         user.getRole(),

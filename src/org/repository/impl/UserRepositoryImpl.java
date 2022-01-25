@@ -3,6 +3,7 @@ package org.repository.impl;
 import org.exceptions.UncheckedException;
 import org.models.User;
 import org.repository.UserRepository;
+import org.service.EditService;
 
 import java.io.*;
 import java.nio.file.Path;
@@ -18,6 +19,8 @@ public class UserRepositoryImpl implements UserRepository {
 
     private static UserRepositoryImpl repository;
     private final Map<Long, User> idToUser;
+
+    private EditService editService;
 
     private UserRepositoryImpl() {
         idToUser = new HashMap<>();
@@ -54,25 +57,34 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
+    public boolean edit(User user) {
+        boolean isEdited = false;
+        User searchUser;
+        User editedUser;
+        for (User u : idToUser.values()) {
+            // определяем пользователя по совпадению id и удаляем из idToUser + перезаписываем файл + result = true
+            if (u.getId() == user.getId()) {
+                searchUser = u;
+                editedUser = editService.edit(searchUser);
+                idToUser.remove(searchUser.getId(), searchUser);
+                save(editedUser);
+                isEdited = true;
+                break;
+            }
+        }
+        return isEdited;
+    }
+
+    @Override
     public User getByEmail(String email) {
         User result = null;
         for (User user : idToUser.values()) {
             // определяем пользователя по совпадению email
+            if (user.getEmail().equals(email)){
+                result = user;
+            }
         }
-
-        return null;
-    }
-
-    @Override
-    public Collection<User> getAll() {
-        return idToUser.values();
-    }
-
-    @Override
-    public void edit(User user) {
-        for (User u : idToUser.values()) {
-            // определяем пользователя по совпадению id и удаляем из idToUser + перезаписываем файл + result = true
-        }
+        return result;
     }
 
     @Override
@@ -80,10 +92,28 @@ public class UserRepositoryImpl implements UserRepository {
         boolean result = false;
         for (User u : idToUser.values()) {
             // определяем пользователя по совпадению id и удаляем из idToUser + перезаписываем файл
-            idToUser.remove(user.getId());
+            if (u.getId() == user.getId()) {
+                idToUser.remove(user.getId());
+                saveFile();
+                result = true;
+                break;
+            }
         }
-
         return result;
+    }
+
+    @Override
+    public Collection<User> getAll() {
+        return idToUser.values();
+    }
+
+    private void saveFile(){
+        Path path = Path.of(DIRECTORY, FILE);
+        try (ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(path.toFile()))) {
+            objectOutputStream.writeObject(new ArrayList<>(this.idToUser.values()));
+        } catch (IOException e) {
+            throw new UncheckedException(e);
+        }
     }
 
     public static synchronized UserRepositoryImpl getRepository() {
@@ -97,9 +127,5 @@ public class UserRepositoryImpl implements UserRepository {
         UserRepositoryImpl repository = new UserRepositoryImpl();
         repository.fillInUsers();
         return repository;
-    }
-
-    public Map<Long, User> getIdToUser() {
-        return idToUser;
     }
 }

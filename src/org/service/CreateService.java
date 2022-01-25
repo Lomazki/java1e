@@ -8,17 +8,17 @@ import java.util.List;
 
 public interface CreateService {
 
-    ValidationError runCreate() throws IOException, ClassNotFoundException;
+    ValidationError runCreate();
 
     User getNewUser();
 
-    User createUser() throws IOException, ClassNotFoundException;
+    User createUser() ;
 
     String newName(String message);
 
     String newLastName(String message);
 
-    String newEmail(String message) throws IOException, ClassNotFoundException;
+    String newEmail(String message);
 
     List<String> newRole(String message);
 
