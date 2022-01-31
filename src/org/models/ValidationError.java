@@ -2,7 +2,7 @@ package src.org.models;
 
 public class ValidationError {
 
-    private String message;
+    private final String message;
 
     public ValidationError(String message) {
         this.message = message;

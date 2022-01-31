@@ -19,6 +19,8 @@ public class NameValidatorImpl implements NameValidator {
         Pattern pattern = Pattern.compile(PATTERN_NAME);
         Matcher matcher = pattern.matcher(name);
 
-        return (matcher.find()) ? null : new ValidationError(String.format(NAME_INCORRECT, name));
+        return (matcher.find())
+                ? null
+                : new ValidationError(String.format(NAME_INCORRECT, name));
     }
 }

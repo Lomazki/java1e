@@ -39,11 +39,11 @@ public class User implements Serializable {
         return lastName;
     }
 
-    public List<String> getRole() {
+    public List<String> getRoles() {
         return role;
     }
 
-    public List<String> getPhoneNumber1() {
+    public List<String> getPhoneNumber() {
         return phone;
     }
 

@@ -6,7 +6,7 @@ import java.util.Collection;
 
 public interface UserRepository {
 
-    void save(User user);
+    void saveUser(User user);
 
     User getByEmail(String email);
 

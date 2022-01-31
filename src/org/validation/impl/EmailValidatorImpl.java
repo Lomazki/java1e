@@ -1,9 +1,9 @@
 package src.org.validation.impl;
 
-import src.org.repository.impl.UserRepositoryImpl;
 import src.org.models.User;
-import src.org.validation.EmailValidator;
 import src.org.models.ValidationError;
+import src.org.service.UserService;
+import src.org.validation.EmailValidator;
 
 import java.util.Collection;
 import java.util.regex.Matcher;
@@ -14,45 +14,44 @@ import static src.org.constants.ExceptionMessage.*;
 public class EmailValidatorImpl implements EmailValidator {
 
     private static final String PATTERN_EMAIL = "^[a-zA-Z0-9.]+@[a-z]+\\.+[a-z]{2,5}$";
+    private final UserService userService;
 
-    public ValidationError validate(String email) {
-        if (validateNamedEmail(email) != null) {
-            return validateNamedEmail(email);
-        }
-        if (isEmailExists(email) != null) {
-            return isEmailExists(email);
-        } else {
-            return null;
-        }
+    public EmailValidatorImpl(UserService userService) {
+        this.userService = userService;
     }
 
-    public ValidationError validateNamedEmail(String email) {
+    @Override
+    public ValidationError validate(String email) {
+
         if (email == null) {
             return new ValidationError(EMAIL_IS_NULL);
         }
+
+        ValidationError validationError = validateEmailName(email);
+        if (validationError != null) {
+            return validationError;
+        }
+        return validateUniq(email);
+    }
+
+    private ValidationError validateEmailName(String email) {
+
         Pattern pattern = Pattern.compile(PATTERN_EMAIL);
         Matcher matcher = pattern.matcher(email);
-        ValidationError validEmail = new ValidationError(String.format(EMAIL_INCORRECT, email));
-        if (matcher.find()) {
-            return null;
-        } else {
-            return validEmail;
-        }
+
+        return matcher.find()
+                ? null
+                : new ValidationError(String.format(EMAIL_INCORRECT, email));
     }
 
-    public ValidationError isEmailExists(String email) {
-        if (email == null) {
-            return new ValidationError(EMAIL_IS_NULL);
+    private ValidationError validateUniq(String email) {
+
+        Collection<User> users = userService.getAll();
+        if (users == null || users.isEmpty()) {
+            return null;
         }
-        UserRepositoryImpl repository = UserRepositoryImpl.getRepository();
-        Collection<User> userList = repository.getAll();
-        if (userList == null || userList.isEmpty()) {
-            userList = repository.getAll();
-            if (userList == null || userList.isEmpty()) {
-                return null;
-            }
-        }
-        for (User user : userList) {
+
+        for (User user : users) {
             if (user.getEmail().equals(email)) {
                 return new ValidationError(String.format(EMAIL_DUPLICATE, email));
             }

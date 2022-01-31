@@ -13,8 +13,9 @@ import static src.org.constants.ExceptionMessage.*;
 public class RoleValidatorImpl implements RoleValidator {
 
     private ValidationError isValidRoleName(String roleName) {
-        return (roleName == null || !Role.getRoleNames().contains(roleName.toUpperCase())) ?
-                new ValidationError(String.format(ROLES_ABSENT, roleName, Role.getRoleNames())) : null;
+        return (roleName == null || !Role.getRoleNames().contains(roleName.toUpperCase()))
+                ? new ValidationError(String.format(ROLES_ABSENT, roleName, Role.getRoleNames()))
+                : null;
     }
 
     public ValidationError validate(List<String> roles) {
