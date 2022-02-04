@@ -3,16 +3,21 @@ package src.org.repository;
 import src.org.models.User;
 
 import java.util.Collection;
+import java.util.List;
 
 public interface UserRepository {
 
     void saveUser(User user);
 
-    User getByEmail(String email);
+    void saveAllUsers (List<User> users);
 
     Collection<User> getAll();
 
-    boolean edit(User user);
+    void edit(User user);
 
-    boolean delete(User user);
+    void delete(User user);
+
+    User getByEmail(String email);
+
+    User getById(long id);
 }

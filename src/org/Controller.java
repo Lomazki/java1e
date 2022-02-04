@@ -1,161 +1,167 @@
 package src.org;
 
+import src.org.models.Role;
 import src.org.models.User;
-import src.org.repository.UserRepository;
+import src.org.service.UserService;
 import src.org.validation.EmailValidator;
 import src.org.validation.NameValidator;
 import src.org.validation.PhoneValidator;
 import src.org.validation.RoleValidator;
+import src.org.view.View;
 
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
+import java.util.function.Consumer;
 
+import static src.org.constants.Constants.*;
 import static src.org.constants.ExceptionMessage.USER_LIST_IS_NULL;
 
 public class Controller {
 
     private final ConsoleWorker consoleWorker;
-    private final UserRepository userRepository;
-    private final ScannerWorker scannerWorker;
+    private final UserService userService;
     private final UserIdGenerator userIdGenerator;
-    private final NameValidator nameValidator;
     private final EmailValidator emailValidator;
+    private final NameValidator nameValidator;
     private final RoleValidator roleValidator;
     private final PhoneValidator phoneValidator;
+    private final View view;
 
     public Controller(ConsoleWorker consoleWorker,
-                      UserRepository userRepository,
-                      ScannerWorker scannerWorker,
+                      UserService userService,
                       UserIdGenerator userIdGenerator,
-                      NameValidator nameValidator,
                       EmailValidator emailValidator,
+                      NameValidator nameValidator,
                       RoleValidator roleValidator,
-                      PhoneValidator phoneValidator) {
+                      PhoneValidator phoneValidator,
+                      View view) {
         this.consoleWorker = consoleWorker;
-        this.userRepository = userRepository;
-        this.scannerWorker = scannerWorker;
+        this.userService = userService;
         this.userIdGenerator = userIdGenerator;
-        this.nameValidator = nameValidator;
         this.emailValidator = emailValidator;
+        this.nameValidator = nameValidator;
         this.roleValidator = roleValidator;
         this.phoneValidator = phoneValidator;
+
+        this.view = view;
     }
 
-    void create() {
+    private static List<String> getAcceptableChoices() {
+        return Arrays.asList(ONE, TWO, THREE, FOUR, FIVE);
+    }
+
+    private Map<String, Runnable> getMainChoice(){
+        Map<String, Runnable> mainActions = new HashMap<>();
+
+        mainActions.put(ONE, this::createUser);
+        mainActions.put(TWO, this::findUser);
+        mainActions.put(THREE, this::editUser);
+        mainActions.put(FOUR, this::removeUser);
+        mainActions.put(FIVE, this::showAllUsers);
+
+        return mainActions;
+    }
+
+    public void createUser() {
         long id = userIdGenerator.getId();
-        String name = scannerWorker.correctingPress("Please, enter name", nameValidator::validate);
-        String lastName = scannerWorker.correctingPress("Please, enter last name", nameValidator::validate);
-        String email = scannerWorker.correctingPress("Enter email", emailValidator::validate);
-        List<String> role = scannerWorker.correctingListPress(
-                "Enter role(s) separated by commas",
-                roleValidator::validate);
-        List<String> phone = scannerWorker.correctingListPress(
-                "Enter phone number(s) separated by commas",
-                phoneValidator::validate);
+        String name = consoleWorker.getChoice(ENTER_FIRST_NAME_MESSAGE, nameValidator::validate);
+        String lastName = consoleWorker.getChoice(ENTER_LAST_NAME_MESSAGE, nameValidator::validate);
+        String email = consoleWorker.getChoice(ENTER_EMAIL_MESSAGE, emailValidator::validate);
+        List<Role> role = getRole();
+        List<String> phone = consoleWorker
+                .getMultiChoice(ENTER_PHONE_NUMBERS_MESSAGE, phoneValidator::validate, COMMA_DELIMITER);
 
         User newUser = new User(id, name, lastName, email, role, phone);
-        userRepository.saveUser(newUser);
-        consoleWorker.showUser(newUser);
+        userService.save(newUser);
     }
 
-    void edit() {
-        String userEmailForEdit = scannerWorker.typingRequest("Please, enter the email address of the " +
-                "person you want to edit");
-        User user = userRepository.getByEmail(userEmailForEdit);
-        User userEdited = editHelp(user);
-        userRepository.edit(userEdited);
-
-        // показать отредактированного юзера
-    }
-
-    void remove() {
-        String userEmailForDel = scannerWorker.typingRequest("Please, enter the email address of the " +
-                "person you want to delete");
-        User userForDel = userRepository.getByEmail(userEmailForDel);
-        // сделать проверку на "есть ли такой юзер"
-        // в идеале сделать валидацию на вводимый email
-        userRepository.delete(userForDel);
-        // отчет об удалении
-    }
-
-    void find() {
-        String userEmailForSearch = scannerWorker.typingRequest("Please, enter the email address of the " +
-                "person you are looking for");
-        User userFound = userRepository.getByEmail(userEmailForSearch);
-        // если найден - вывести на консоль. нет - выдать ошибку
-        // в идеале сделать валидацию на вводимый email
-        System.out.println(userFound);
-    }
-
-    void showAll() {
-        Collection<User> allUser = userRepository.getAll();
-        if (allUser == null || allUser.isEmpty()) {
-            consoleWorker.showMessage(USER_LIST_IS_NULL);
+    private List<Role> getRole() {
+        List<Role> roles = new ArrayList<>();
+        List<String> roleName = consoleWorker
+                .getMultiChoice(ENTER_ROLES_MESSAGE, roleValidator::validate, COMMA_DELIMITER);
+        for (String role : roleName) {
+            roles.add(Role.valueOf(role.toUpperCase()));
         }
-        for (User s : allUser) {        /////////////////////////////////////////////
-            consoleWorker.showUser(s);
-        }
+        return roles;
     }
 
-    private User editHelp (User user){
+    public void editUser() {
+        User user = find();
+
+        String choice = consoleWorker.getChoice(getAcceptableChoices(), EDIT_CHOICE_MESSAGE);
+        Consumer <User> consumer = getChoiceToEditAction(user).get(choice);
+        consumer.accept(user);
+    }
+
+    private User find() {
+        String email = consoleWorker.getChoice(ENTER_EMAIL_SEARCHABLE_USER_MESSAGE,
+                                                emailValidator::validateEmailName);
+        return userService.getByEmail(email);
+    }
+
+    private Map<String, Consumer<User>> getChoiceToEditAction(User user) {  // Большой вопрос!
+        Map<String, Consumer<User>> editAction = new HashMap<>();
+
+        editAction.put(ONE, this::editName);
+        editAction.put(TWO, this::editLastName);
+        editAction.put(THREE, this::editEmail);
+        editAction.put(FOUR, this::editRole);
+        editAction.put(FIVE, this::editPhone);
+        return editAction;
+    }
+
+    private void editName(User user) {
+        user.setFirstName(consoleWorker.getChoice(ENTER_FIRST_NAME_MESSAGE, nameValidator::validate));
+        userService.save(user);
+    }
+
+    private void editLastName(User user) {
+        user.setFirstName(consoleWorker.getChoice(ENTER_LAST_NAME_MESSAGE, nameValidator::validate));
+        userService.save(user);
+    }
+
+    private void editEmail(User user) {
+        user.setEmail(consoleWorker.getChoice(ENTER_EMAIL_MESSAGE, emailValidator::validate));
+        userService.save(user);
+    }
+
+    private void editRole(User user) {
+        user.setRole(getRole());
+        userService.save(user);
+    }
+
+    private void editPhone(User user) {
+        user.setPhone(consoleWorker.getMultiChoice(
+                ENTER_PHONE_NUMBERS_MESSAGE, phoneValidator::validate, COMMA_DELIMITER));
+        userService.save(user);
+    }
+
+    public void removeUser() {
+        User user = find();
         if (user == null) {
-            return null;
+            view.show(USER_WAS_NOT_FOUND);
+        } else {
+            userService.delete(user);
         }
-        String choice;
-        do {
-            choice = scannerWorker.editSelect();
-        } while ((!(choice.equals("1") ||
-                choice.equals("2") ||
-                choice.equals("3") ||
-                choice.equals("4") ||
-                choice.equals("5"))));
+    }
 
-        switch (choice) {
-            case ("1"): {
-                return new User(user.getId(),
-                        scannerWorker.correctingPress("Please, enter name", nameValidator::validate),
-                        user.getLastName(),
-                        user.getEmail(),
-                        user.getRoles(),
-                        user.getPhoneNumber());
-            }
-            case ("2"): {
-                return new User(user.getId(),
-                        user.getFirstName(),
-                        scannerWorker.correctingPress("Please, enter last name", nameValidator::validate),
-                        user.getEmail(),
-                        user.getRoles(),
-                        user.getPhoneNumber());
-            }
-            case ("3"): {
-                return new User(user.getId(),
-                        user.getFirstName(),
-                        user.getLastName(),
-                        scannerWorker.correctingPress("Enter email", emailValidator::validate),
-                        user.getRoles(),
-                        user.getPhoneNumber());
-            }
-            case ("4"): {
-                return new User(user.getId(),
-                        user.getFirstName(),
-                        user.getLastName(),
-                        user.getEmail(),
-                        scannerWorker.correctingListPress(
-                                "Enter role(s) separated by commas",
-                                roleValidator::validate),
-                        user.getPhoneNumber());
-            }
-            case ("5"): {
-                return new User(user.getId(),
-                        user.getFirstName(),
-                        user.getLastName(),
-                        user.getEmail(),
-                        user.getRoles(),
-                        scannerWorker.correctingListPress(
-                                "Enter phone number(s) separated by commas",
-                                phoneValidator::validate));
-            }
+    public void showAllUsers() {                            // Большой вопрос!
+        Collection<User> allUsers = userService.getAll();
+        if (allUsers == null || allUsers.isEmpty()) {       // показал сообщение. И что?!?
+            view.show(USER_LIST_IS_NULL);
         }
-        return null;
+        for (User user : allUsers) {                        // Как избавиться?
+            view.show(user);
+        }
+    }
+
+    public void findUser() {
+        User user = find();
+        view.showOrDefault(user, USER_WAS_NOT_FOUND);
+    }
+
+    public void launch(){
+        String choice = consoleWorker.getChoice(getAcceptableChoices(), MAIN_CHOICE);
+        Runnable action = getMainChoice().get(choice);
+        action.run();
     }
 }

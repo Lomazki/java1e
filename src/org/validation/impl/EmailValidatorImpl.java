@@ -22,7 +22,6 @@ public class EmailValidatorImpl implements EmailValidator {
 
     @Override
     public ValidationError validate(String email) {
-
         if (email == null) {
             return new ValidationError(EMAIL_IS_NULL);
         }
@@ -34,7 +33,8 @@ public class EmailValidatorImpl implements EmailValidator {
         return validateUniq(email);
     }
 
-    private ValidationError validateEmailName(String email) {
+    @Override
+    public ValidationError validateEmailName(String email) {
 
         Pattern pattern = Pattern.compile(PATTERN_EMAIL);
         Matcher matcher = pattern.matcher(email);
@@ -45,7 +45,6 @@ public class EmailValidatorImpl implements EmailValidator {
     }
 
     private ValidationError validateUniq(String email) {
-
         Collection<User> users = userService.getAll();
         if (users == null || users.isEmpty()) {
             return null;

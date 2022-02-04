@@ -11,10 +11,10 @@ public class User implements Serializable {
     private String firstName;
     private String lastName;
     private String email;
-    private List<String> role;
+    private List<Role> role;
     private List<String> phone;
 
-    public User(long id, String firstName, String lastName, String email, List<String> role, List<String> phone) {
+    public User(long id, String firstName, String lastName, String email, List<Role> role, List<String> phone) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -27,10 +27,6 @@ public class User implements Serializable {
         return id;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
     public String getFirstName() {
         return firstName;
     }
@@ -39,7 +35,11 @@ public class User implements Serializable {
         return lastName;
     }
 
-    public List<String> getRoles() {
+    public String getEmail() {
+        return email;
+    }
+
+    public List<Role> getRoles() {
         return role;
     }
 
@@ -73,7 +73,7 @@ public class User implements Serializable {
         this.email = email;
     }
 
-    public void setRole(List<String> role) {
+    public void setRole(List<Role> role) {
         this.role = role;
     }
 

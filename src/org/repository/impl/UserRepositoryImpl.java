@@ -1,6 +1,6 @@
 package src.org.repository.impl;
 
-import src.org.FileWorker;
+import src.org.datesource.DateSource;
 import src.org.models.User;
 import src.org.repository.UserRepository;
 
@@ -11,11 +11,11 @@ public class UserRepositoryImpl implements UserRepository {
 
     private static UserRepositoryImpl repository;
     private final Map<Long, User> idToUser;
-    private final FileWorker fileWorker;
+    private final DateSource dateSource;
 
-    private UserRepositoryImpl(FileWorker fileWorker) {
+    private UserRepositoryImpl(DateSource dateSource) {
         this.idToUser = new HashMap<>();
-        this.fileWorker = fileWorker;
+        this.dateSource = dateSource;
     }
 
     @Override
@@ -23,35 +23,25 @@ public class UserRepositoryImpl implements UserRepository {
         if (user != null) {
             idToUser.put(user.getId(), user);
         }
-        fileWorker.save(new ArrayList<>(this.idToUser.values()));
+        dateSource.save(new ArrayList<>(this.idToUser.values()));
     }
 
     @Override
-    public boolean edit(User user) { //////////////////////////////////////////
-        boolean isEdited = false;
-//        User searchUser;
-//        User editedUser;
+    public void saveAllUsers(List<User> users) {
+        dateSource.save(users);
+    }
+
+    @Override
+    public void edit(User user) {
         idToUser.put(user.getId(), user);
-        fileWorker.save(new ArrayList<>(idToUser.values()));
-//        for (User u : idToUser.values()) {
-//            // определяем пользователя по совпадению id и удаляем из idToUser + перезаписываем файл + result = true
-//            if (u.getId() == user.getId()) {
-//                searchUser = u;
-//                editedUser = editHelper.edit(searchUser);
-//                idToUser.remove(searchUser.getId(), searchUser);
-//                saveUser(editedUser);
-//                isEdited = true;
-//                break;
-//            }
-//        }
-        return isEdited;
+        dateSource.save(new ArrayList<>(idToUser.values()));
     }
 
     @Override
     public User getByEmail(String email) {
         User result = null;
         for (User user : idToUser.values()) {
-            if (user.getEmail().equals(email)){
+            if (user.getEmail().equals(email)) {
                 result = user;
             }
         }
@@ -59,17 +49,25 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public boolean delete(User user) {
-        boolean result = false;
-        for (User u : idToUser.values()) {
-            if (u.getId() == user.getId()) {
-                idToUser.remove(user.getId());
-                fileWorker.save(new ArrayList<>(this.idToUser.values()));
-                result = true;
-                break;
+    public User getById(long id) {
+        User result = null;
+        for (User user : idToUser.values()) {
+            if (user.getId() == id) {
+                result = user;
             }
         }
         return result;
+    }
+
+    @Override
+    public void delete(User user) {
+        for (User u : idToUser.values()) {
+            if (u.getId() == user.getId()) {
+                idToUser.remove(user.getId());
+                dateSource.save(new ArrayList<>(this.idToUser.values()));
+                break;
+            }
+        }
     }
 
     @Override
@@ -78,22 +76,18 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     private void fillInUsers() {
-        List<User> users = fileWorker.read();
+        List<User> users = dateSource.getUsers();
         for (User user : users) {
             idToUser.put(user.getId(), user);
         }
     }
 
-    public static synchronized UserRepositoryImpl getRepository() {
+    public static synchronized UserRepositoryImpl getRepository(DateSource dateSource) {
         if (repository == null) {
-            repository = newRepository();
+            UserRepositoryImpl repository = new UserRepositoryImpl(dateSource);
+            repository.fillInUsers();
+            return repository;
         }
-        return repository;
-    }
-
-    private static UserRepositoryImpl newRepository() {
-        UserRepositoryImpl repository = new UserRepositoryImpl(new FileWorker());
-        repository.fillInUsers();
         return repository;
     }
 }

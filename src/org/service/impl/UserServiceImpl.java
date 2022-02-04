@@ -35,7 +35,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean delete(User user) {
-        return userRepository.delete(user);
+    public void delete(User user) {
+        userRepository.delete(user);
     }
 }

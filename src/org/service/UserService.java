@@ -14,5 +14,5 @@ public interface UserService {
 
     void edit(User user);
 
-    boolean delete(User user);
+    void delete(User user);
 }
