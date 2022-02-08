@@ -10,7 +10,7 @@ import java.util.List;
 
 public class FileWorker {
 
-    private static final String DIRECTORY = "resources";
+    private static final String DIRECTORY = "src/main/resources";
     private static final String FILE = "userBook.out";
 
     @SuppressWarnings("unchecked")

@@ -1,7 +1,7 @@
 package org.validators.impl;
 
-import org.validators.NameValidator;
 import org.models.ValidationError;
+import org.validators.NameValidator;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

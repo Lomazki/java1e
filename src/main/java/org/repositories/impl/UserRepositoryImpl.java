@@ -1,8 +1,8 @@
 package org.repositories.impl;
 
 import org.models.User;
-import org.repositories.UserRepository;
 import org.components.DataSource;
+import org.repositories.UserRepository;
 
 import java.util.*;
 

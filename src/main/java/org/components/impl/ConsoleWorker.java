@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.function.Function;
 
-public class ConsoleWorker implements InteractiveWorker {
+public class ConsoleWorker  implements InteractiveWorker {
 
     Scanner scanner;
     View view;
@@ -64,6 +64,4 @@ public class ConsoleWorker implements InteractiveWorker {
             }
         }
     }
-
-
 }

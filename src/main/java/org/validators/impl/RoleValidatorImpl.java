@@ -1,8 +1,8 @@
 package org.validators.impl;
 
 import org.models.Role;
-import org.validators.RoleValidator;
 import org.models.ValidationError;
+import org.validators.RoleValidator;
 
 import java.util.*;
 

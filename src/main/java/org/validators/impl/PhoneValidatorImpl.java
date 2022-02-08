@@ -1,7 +1,7 @@
 package org.validators.impl;
 
-import org.validators.PhoneValidator;
 import org.models.ValidationError;
+import org.validators.PhoneValidator;
 
 import java.util.List;
 import java.util.regex.Matcher;
