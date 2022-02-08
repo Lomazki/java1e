@@ -1,4 +1,4 @@
-package src.org.models;
+package org.models;
 
 public class ValidationError {
 

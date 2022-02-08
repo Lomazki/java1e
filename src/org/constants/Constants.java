@@ -1,4 +1,4 @@
-package src.org.constants;
+package org.constants;
 
 public class Constants {
     private Constants() {

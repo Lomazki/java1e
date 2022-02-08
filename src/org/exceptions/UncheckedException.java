@@ -1,4 +1,4 @@
-package src.org.exceptions;
+package org.exceptions;
 
 public class UncheckedException extends RuntimeException {
 

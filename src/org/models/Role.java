@@ -1,4 +1,4 @@
-package src.org.models;
+package org.models;
 
 import java.util.Arrays;
 import java.util.List;
