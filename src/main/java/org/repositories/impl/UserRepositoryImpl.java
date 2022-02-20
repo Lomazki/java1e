@@ -8,7 +8,7 @@ import java.util.*;
 
 public class UserRepositoryImpl implements UserRepository {
 
-    private static UserRepositoryImpl repository; // почему выдает ошибку при удалении этого поля?
+    private static UserRepositoryImpl repository; 
     private final Map<Long, User> idToUser;
     private final DataSource dataSource;
 
